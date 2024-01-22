@@ -33,3 +33,11 @@
 .menuItem:last-child {
     margin-right: 0;
 }
+
+.menuItem a {
+    color: var(--text-dark-grey-secondary-text);
+}
+
+.active {
+    color: #ffffff;
+}

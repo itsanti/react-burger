@@ -25,13 +25,14 @@ const BurgerConstructor = () => {
                     price={200}
                     thumbnail={data[0].image}
                 />
-                {elementIds.map(elementId => {
+                {elementIds.map((elementId, ix) => {
                     const [element] = data.filter(item => item._id === elementId);
                     totalPrice += element.price;
                     return <ConstructorElement
                         text={element.name}
                         price={element.price}
                         thumbnail={element.image}
+                        key={ix}
                     />;
                 })}
                 <ConstructorElement
@@ -42,7 +43,7 @@ const BurgerConstructor = () => {
                     thumbnail={data[0].image}
                 />
                 <div className='mt-1' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                    <div style={{ display: 'flex', alignItems: 'center'}}><span style={{paddingRight: '8px'}}>{totalPrice}</span><CurrencyIcon type="primary" /></div>
+                    <div className={styles.totalPrice}><span>{totalPrice}</span><CurrencyIcon type="primary" /></div>
                     <Button htmlType="button" type="primary" size="large" extraClass="ml-10">
                         Оформить заказ
                     </Button>
