@@ -38,6 +38,6 @@
     color: var(--text-dark-grey-secondary-text);
 }
 
-.active {
+.menuItem .active {
     color: #ffffff;
 }
