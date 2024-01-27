@@ -8,12 +8,12 @@ function App() {
   return (
     <>
       <AppHeader />
-      <section className='container'>
+      <section className="container">
         <BurgerIngredients />
         <BurgerConstructor />
       </section>
     </>
-  )
+  );
 }
 
 export default App;

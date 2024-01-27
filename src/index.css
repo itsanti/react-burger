@@ -1,29 +1,30 @@
 :root {
-    --offset-base-size: 4px;
-    --text-dark-grey-secondary-text: #8585AD;
+  --offset-base-size: 4px;
+  --text-dark-grey-secondary-text: #8585ad;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    min-height: 100vh;
-    background: var(--interface-bg, #131316);
+  min-height: 100vh;
+  background: var(--interface-bg, #131316);
 
-    /* desktop/text */
-    font-family: "JetBrains Mono";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 24px; /* 150% */
+  /* desktop/text */
+  font-family: 'JetBrains Mono';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px; /* 150% */
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
