@@ -2,14 +2,13 @@ import React from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import data from '../../utils/data';
 
-const BurgerConstructor = () => {
+const BurgerConstructor = ({ data }) => {
   const elementIds = [
-    '60666c42cc7b410027a1a9b9',
-    '60666c42cc7b410027a1a9b4',
-    '60666c42cc7b410027a1a9bc',
-    '60666c42cc7b410027a1a9bb',
+    '643d69a5c3f7b9001cfa0944',
+    '643d69a5c3f7b9001cfa093f',
+    '643d69a5c3f7b9001cfa0947',
+    '643d69a5c3f7b9001cfa0946',
   ];
 
   let totalPrice = 400;

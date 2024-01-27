@@ -1,9 +1,8 @@
 import React from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import data from '../../utils/data';
 
-const BurgerIngredients = () => {
+const BurgerIngredients = ({ data }) => {
   const SECTIONS = [
     ['bun', 'Булки'],
     ['sauce', 'Соусы'],
