@@ -25,17 +25,14 @@
   padding: 0;
 }
 
-.menuItem {
-  display: flex;
-  align-items: center;
-  margin-right: 8px;
-}
-
 .menuItem:last-child {
   margin-right: 0;
 }
 
 .menuItem a {
+  display: flex;
+  align-items: center;
+  margin-right: 8px;
   color: var(--text-dark-grey-secondary-text);
 }
 

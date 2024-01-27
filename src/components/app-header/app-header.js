@@ -9,28 +9,32 @@ const AppHeader = () => {
         <nav>
           <ul className={styles.menu}>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <div className="mr-2">
-                <BurgerIcon type="primary" />
-              </div>
               <a href="/" className={styles.active}>
+                <div className="mr-2">
+                  <BurgerIcon type="primary" />
+                </div>
                 Конструктор
               </a>
             </li>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <div className="mr-2">
-                <ListIcon type="secondary" />
-              </div>
-              <a href="/">Лента заказов</a>
+              <a href="/">
+                <div className="mr-2">
+                  <ListIcon type="secondary" />
+                </div>
+                Лента заказов
+              </a>
             </li>
           </ul>
         </nav>
         <Logo />
         <ul className={styles.menu}>
           <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-            <div className="mr-2">
-              <ProfileIcon type="secondary" />
-            </div>
-            <a href="/">Личный кабинет</a>
+            <a href="/">
+              <div className="mr-2">
+                <ProfileIcon type="secondary" />
+              </div>
+              Личный кабинет
+            </a>
           </li>
         </ul>
       </header>
