@@ -1,6 +1,7 @@
 :root {
   --offset-base-size: 4px;
   --text-dark-grey-secondary-text: #8585ad;
+  --text-primary-light-standart-text: #f2f2f3;
 }
 
 * {

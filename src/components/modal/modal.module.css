@@ -2,12 +2,14 @@
   display: flex;
   flex-direction: column;
   position: absolute;
+  z-index: 1000;
   padding: 40px;
   padding-bottom: 60px;
   width: 720px;
-  min-height: 200px;
-  top: 25vh;
-  left: calc(50% - 360px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   border-radius: 40px;
   border: 1px solid rgba(76, 76, 255, 0.2);
   background: #1c1c21;
@@ -18,14 +20,13 @@
     0px 24px 32px 0px rgba(0, 0, 0, 0.04);
 }
 .title {
-  color: var(#f2f2f3);
+  color: var(--text-primary-light-standart-text);
   font-family: 'JetBrains Mono';
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
   line-height: 40px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -47,4 +48,6 @@
   display: block;
   background: #1c1c21;
   cursor: pointer;
+  align-self: end;
+  margin-left: auto;
 }

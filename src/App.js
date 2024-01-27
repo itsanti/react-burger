@@ -4,7 +4,6 @@ import { API_URL } from './utils/config';
 import AppHeader from './components/app-header/app-header';
 import BurgerIngredients from './components/burger-ingredients/burger-ingredients';
 import BurgerConstructor from './components/burger-constructor/burger-constructor';
-import { ModalOverlay } from './components/modal-overlay/modal-overlay';
 
 function App() {
   const [data, setData] = useState([]);
@@ -42,9 +41,6 @@ function App() {
           <p>{isError ? 'Произошла ошибка загрузки данных' : 'Загрузка данных'}</p>
         )}
       </section>
-      <ModalOverlay>
-        <p>Modal content</p>
-      </ModalOverlay>
     </>
   );
 }

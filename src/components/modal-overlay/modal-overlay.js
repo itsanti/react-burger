@@ -1,30 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Modal from '../modal/modal';
 import styles from './modal-overlay.module.css';
 
-export const ModalOverlay = ({ children }) => {
-  const [isOpen, setIsModalOpened] = useState(true);
-  const escHandler = (ev) => {
-    if (ev.key === 'Escape') {
-      setIsModalOpened(false);
-    }
-  };
+const ModalOverlay = ({ children, title, showModal, onModalClosed }) => {
+  const [isOpen, setIsModalOpened] = useState(false);
+
+  const escHandler = useCallback(
+    (ev) => {
+      if (ev.key === 'Escape') {
+        setIsModalOpened(false);
+        onModalClosed(false);
+      }
+    },
+    [onModalClosed],
+  );
+
   useEffect(() => {
+    if (showModal) {
+      setIsModalOpened(true);
+    }
     document.addEventListener('keydown', escHandler, false);
     return () => {
       document.removeEventListener('keydown', escHandler, false);
     };
-  }, []);
+  }, [showModal, escHandler]);
   return isOpen ? (
     <div
       className={styles.root}
-      onClick={() => {
-        setIsModalOpened(false);
+      onClick={(ev) => {
+        if (ev.currentTarget === ev.target) {
+          setIsModalOpened(false);
+          onModalClosed(false);
+        }
       }}
     >
-      <Modal title="Add review" isOpen={isOpen} setIsModalOpened={setIsModalOpened}>
+      <Modal
+        title={title}
+        isOpen={isOpen}
+        setIsModalOpened={() => {
+          setIsModalOpened(false);
+          onModalClosed(false);
+        }}
+      >
         {children}
       </Modal>
     </div>
   ) : null;
 };
+
+export default ModalOverlay;

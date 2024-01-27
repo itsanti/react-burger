@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from '../modal-overlay/modal-overlay';
+import OrderDetails from '../order-details/order-details';
 
 const BurgerConstructor = ({ data }) => {
+  const [showModal, setShowModal] = useState(false);
+
+  const onModalClosed = () => {
+    setShowModal(false);
+  };
+
   const elementIds = [
     '643d69a5c3f7b9001cfa0944',
     '643d69a5c3f7b9001cfa093f',
@@ -41,9 +49,12 @@ const BurgerConstructor = ({ data }) => {
           <span>{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" extraClass="ml-10">
+        <Button htmlType="button" type="primary" size="large" extraClass="ml-10" onClick={() => setShowModal(true)}>
           Оформить заказ
         </Button>
+        <ModalOverlay showModal={showModal} onModalClosed={onModalClosed}>
+          <OrderDetails />
+        </ModalOverlay>
       </div>
     </div>
   );
