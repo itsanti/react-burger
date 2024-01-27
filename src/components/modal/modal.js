@@ -2,6 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import { ReactComponent as CloseIcon } from '../../images/close-icon.svg';
+import PropTypes from 'prop-types';
 
 const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
   return (
@@ -21,6 +22,13 @@ const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
         )}
     </div>
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.element.isRequired,
+  title: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
+  setIsModalOpened: PropTypes.func.isRequired,
 };
 
 export default Modal;

@@ -3,9 +3,11 @@ import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import PropTypes from 'prop-types';
+import { ingredientPropTypes } from '../../utils/prop-types';
 
 const BurgerIngredients = ({ data }) => {
-  const [showModal, setShowModal] = useState({ data: {}, isOpen: false });
+  const [showModal, setShowModal] = useState({ data: null, isOpen: false });
 
   const SECTIONS = [
     ['bun', 'Булки'],
@@ -23,7 +25,7 @@ const BurgerIngredients = ({ data }) => {
 
   const onModalClosed = () => {
     setShowModal({
-      data: {},
+      data: null,
       isOpen: false,
     });
   };
@@ -67,6 +69,10 @@ const BurgerIngredients = ({ data }) => {
       </ModalOverlay>
     </div>
   );
+};
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerIngredients;

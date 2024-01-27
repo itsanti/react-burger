@@ -4,6 +4,8 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import OrderDetails from '../order-details/order-details';
+import PropTypes from 'prop-types';
+import { ingredientPropTypes } from '../../utils/prop-types';
 
 const BurgerConstructor = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
@@ -58,6 +60,10 @@ const BurgerConstructor = ({ data }) => {
       </div>
     </div>
   );
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerConstructor;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Modal from '../modal/modal';
 import styles from './modal-overlay.module.css';
+import PropTypes from 'prop-types';
 
 const ModalOverlay = ({ children, title, showModal, onModalClosed }) => {
   const [isOpen, setIsModalOpened] = useState(false);
@@ -46,6 +47,13 @@ const ModalOverlay = ({ children, title, showModal, onModalClosed }) => {
       </Modal>
     </div>
   ) : null;
+};
+
+ModalOverlay.propTypes = {
+  children: PropTypes.element.isRequired,
+  title: PropTypes.string,
+  showModal: PropTypes.bool.isRequired,
+  onModalClosed: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;
