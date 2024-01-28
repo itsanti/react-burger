@@ -21,22 +21,19 @@ const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
     };
   }, [escHandler]);
 
-  return (
-    <div>
-      {isOpen &&
-        createPortal(
-          <div className={styles.modal}>
-            <div className={styles.title}>
-              {title}
-              <button className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
-                <CloseIcon />
-              </button>
-            </div>
-            <div className={styles.body}>{children}</div>
-          </div>,
-          document.querySelector('#modal-overlay'),
-        )}
-    </div>
+  if (!isOpen) return null;
+
+  return createPortal(
+    <div className={styles.modal}>
+      <div className={styles.title}>
+        {title}
+        <button className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
+          <CloseIcon />
+        </button>
+      </div>
+      <div className={styles.body}>{children}</div>
+    </div>,
+    document.querySelector('#modal-overlay'),
   );
 };
 

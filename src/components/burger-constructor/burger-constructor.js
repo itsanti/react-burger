@@ -7,7 +7,7 @@ import OrderDetails from '../order-details/order-details';
 import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../utils/prop-types';
 
-const BurgerConstructor = ({ data }) => {
+const BurgerConstructor = ({ ingredients }) => {
   const [showModal, setShowModal] = useState(false);
 
   const onModalClosed = () => {
@@ -30,10 +30,10 @@ const BurgerConstructor = ({ data }) => {
         isLocked={true}
         text="Краторная булка N-200i (верх)"
         price={200}
-        thumbnail={data[0].image}
+        thumbnail={ingredients[0].image}
       />
       {elementIds.map((elementId, ix) => {
-        const [element] = data.filter((item) => item._id === elementId);
+        const [element] = ingredients.filter((item) => item._id === elementId);
         totalPrice += element.price;
         return (
           <ConstructorElement text={element.name} price={element.price} thumbnail={element.image} key={element._id} />
@@ -44,7 +44,7 @@ const BurgerConstructor = ({ data }) => {
         isLocked={true}
         text="Краторная булка N-200i (низ)"
         price={200}
-        thumbnail={data[0].image}
+        thumbnail={ingredients[0].image}
       />
       <div className={styles.footer + ' mt-1'}>
         <div className={styles.totalPrice}>
@@ -63,7 +63,7 @@ const BurgerConstructor = ({ data }) => {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes),
+  ingredients: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerConstructor;

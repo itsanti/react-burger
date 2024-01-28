@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './app.css';
-import { API_URL } from '../../utils/config';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { request } from '../../utils/http';
 
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [isError, setError] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_URL}/ingredients`)
-      .then((res) => {
-        return res.json();
-      })
+    request('/ingredients')
       .then((res) => {
         if (res.success) {
           setData(res.data);
@@ -34,8 +31,8 @@ function App() {
       <section className="container">
         {!isError && !isLoading ? (
           <>
-            <BurgerIngredients data={data} />
-            <BurgerConstructor data={data} />
+            <BurgerIngredients ingredients={data} />
+            <BurgerConstructor ingredients={data} />
           </>
         ) : (
           <p>{isError ? 'Произошла ошибка загрузки данных' : 'Загрузка данных'}</p>

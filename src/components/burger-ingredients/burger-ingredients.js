@@ -5,27 +5,21 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../utils/prop-types';
+import { SECTIONS, SHOW_INDEX_ON } from '../../utils/config';
 
-const BurgerIngredients = ({ data }) => {
-  const [showModal, setShowModal] = useState({ data: null, isOpen: false });
-
-  const SECTIONS = [
-    ['bun', 'Булки'],
-    ['sauce', 'Соусы'],
-    ['main', 'Начинки'],
-  ];
-  const SHOW_INDEX_ON = [0, 3];
+const BurgerIngredients = ({ ingredients }) => {
+  const [showModal, setShowModal] = useState({ ingredient: null, isOpen: false });
 
   const showModalHandler = (ingredient) => {
     setShowModal({
-      data: ingredient,
+      ingredient,
       isOpen: true,
     });
   };
 
   const onModalClosed = () => {
     setShowModal({
-      data: null,
+      ingredient: null,
       isOpen: false,
     });
   };
@@ -45,7 +39,7 @@ const BurgerIngredients = ({ data }) => {
           return (
             <section className={styles.tabSection} key={ix}>
               <h2 className={styles.tabSectionHeader}>{type[1]}</h2>
-              {data
+              {ingredients
                 .filter((item) => item.type === type[0])
                 .map((ingredient, index) => {
                   return (
@@ -65,14 +59,14 @@ const BurgerIngredients = ({ data }) => {
         })}
       </div>
       <ModalOverlay title="Детали ингредиента" showModal={showModal.isOpen} onModalClosed={onModalClosed}>
-        <IngredientDetails ingredient={showModal.data} />
+        <IngredientDetails ingredient={showModal.ingredient} />
       </ModalOverlay>
     </div>
   );
 };
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientPropTypes),
+  ingredients: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerIngredients;
