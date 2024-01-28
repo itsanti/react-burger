@@ -2,6 +2,7 @@ import React, { useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import { ReactComponent as CloseIcon } from '../../images/close-icon.svg';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 import PropTypes from 'prop-types';
 
 const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
@@ -24,15 +25,18 @@ const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className={styles.modal}>
-      <div className={styles.title}>
-        {title}
-        <button className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
-          <CloseIcon />
-        </button>
+    <>
+      <div className={styles.modal}>
+        <div className={styles.title}>
+          {title}
+          <button className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
+            <CloseIcon />
+          </button>
+        </div>
+        <div className={styles.body}>{children}</div>
       </div>
-      <div className={styles.body}>{children}</div>
-    </div>,
+      <ModalOverlay onModalClosed={setIsModalOpened} />
+    </>,
     document.querySelector('#modal-overlay'),
   );
 };

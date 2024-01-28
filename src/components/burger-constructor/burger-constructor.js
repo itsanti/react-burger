@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../modal-overlay/modal-overlay';
+import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../utils/prop-types';
@@ -54,9 +54,9 @@ const BurgerConstructor = ({ ingredients }) => {
         <Button htmlType="button" type="primary" size="large" extraClass="ml-10" onClick={() => setShowModal(true)}>
           Оформить заказ
         </Button>
-        <ModalOverlay showModal={showModal} onModalClosed={onModalClosed}>
+        <Modal isOpen={showModal} setIsModalOpened={onModalClosed}>
           <OrderDetails />
-        </ModalOverlay>
+        </Modal>
       </div>
     </div>
   );

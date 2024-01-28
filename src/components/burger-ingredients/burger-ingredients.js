@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../modal-overlay/modal-overlay';
+import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../utils/prop-types';
@@ -58,9 +58,9 @@ const BurgerIngredients = ({ ingredients }) => {
           );
         })}
       </div>
-      <ModalOverlay title="Детали ингредиента" showModal={showModal.isOpen} onModalClosed={onModalClosed}>
+      <Modal title="Детали ингредиента" isOpen={showModal.isOpen} setIsModalOpened={onModalClosed}>
         <IngredientDetails ingredient={showModal.ingredient} />
-      </ModalOverlay>
+      </Modal>
     </div>
   );
 };

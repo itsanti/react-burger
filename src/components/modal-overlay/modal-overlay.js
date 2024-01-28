@@ -1,45 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import Modal from '../modal/modal';
+import React from 'react';
 import styles from './modal-overlay.module.css';
 import PropTypes from 'prop-types';
 
-const ModalOverlay = ({ children, title, showModal, onModalClosed }) => {
-  const [isOpen, setIsModalOpened] = useState(false);
-
-  useEffect(() => {
-    if (showModal) {
-      setIsModalOpened(true);
-    }
-  }, [showModal]);
-
-  return isOpen ? (
+const ModalOverlay = ({ onModalClosed }) => {
+  return (
     <div
       className={styles.root}
       onClick={(ev) => {
         if (ev.currentTarget === ev.target) {
-          setIsModalOpened(false);
           onModalClosed(false);
         }
       }}
-    >
-      <Modal
-        title={title}
-        isOpen={isOpen}
-        setIsModalOpened={() => {
-          setIsModalOpened(false);
-          onModalClosed(false);
-        }}
-      >
-        {children}
-      </Modal>
-    </div>
-  ) : null;
+    />
+  );
 };
 
 ModalOverlay.propTypes = {
-  children: PropTypes.element.isRequired,
-  title: PropTypes.string,
-  showModal: PropTypes.bool.isRequired,
   onModalClosed: PropTypes.func.isRequired,
 };
 
