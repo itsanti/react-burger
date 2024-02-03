@@ -12,3 +12,7 @@ export const ingredientPropTypes = PropTypes.shape({
   image_mobile: PropTypes.string.isRequired,
   image_large: PropTypes.string.isRequired,
 });
+
+export const orderDetailsPropTypes = PropTypes.shape({
+  number: PropTypes.number.isRequired,
+});

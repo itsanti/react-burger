@@ -4,6 +4,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { request } from '../../utils/http';
+import { IngredientsContext } from '../../srvices/ingredients-context';
 
 function App() {
   const [data, setData] = useState(null);
@@ -30,10 +31,10 @@ function App() {
       <AppHeader />
       <section className="container">
         {!isError && !isLoading ? (
-          <>
+          <IngredientsContext.Provider value={data}>
             <BurgerIngredients ingredients={data} />
-            <BurgerConstructor ingredients={data} />
-          </>
+            <BurgerConstructor />
+          </IngredientsContext.Provider>
         ) : (
           <p>{isError ? 'Произошла ошибка загрузки данных' : 'Загрузка данных'}</p>
         )}
