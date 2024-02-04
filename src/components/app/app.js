@@ -14,32 +14,29 @@ function App() {
   useEffect(() => {
     request('/ingredients')
       .then((res) => {
-        if (res.success) {
-          setData(res.data);
-          setLoading(false);
-        } else {
-          setError(true);
-        }
+        setData(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         setError(true);
+        console.error(err);
       });
   }, []);
 
   return (
-    <>
+    <main>
       <AppHeader />
       <section className="container">
         {!isError && !isLoading ? (
           <IngredientsContext.Provider value={data}>
-            <BurgerIngredients ingredients={data} />
+            <BurgerIngredients />
             <BurgerConstructor />
           </IngredientsContext.Provider>
         ) : (
           <p>{isError ? 'Произошла ошибка загрузки данных' : 'Загрузка данных'}</p>
         )}
       </section>
-    </>
+    </main>
   );
 }
 

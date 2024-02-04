@@ -1,25 +1,29 @@
 import { API_URL } from './config';
 
-export const request = (path) => {
-  return fetch(`${API_URL}${path}`).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject('HTTP Error');
-  });
+const checkResponse = (res) => {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Error ${res.status}`);
 };
 
-export const requestPost = (path, body) => {
-  return fetch(`${API_URL}${path}`, {
+const checkSuccess = (res) => {
+  if (res && res.success) {
+    return res;
+  }
+  return Promise.reject(`Answer not success: ${res}`);
+};
+
+export const request = (path, options) => {
+  return fetch(`${API_URL}${path}`, options).then(checkResponse).then(checkSuccess);
+};
+
+export const requestPost = (path, options) => {
+  const defaultOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify(body),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject('HTTP Error');
-  });
+  };
+  return request(path, { ...defaultOptions, ...options, body: JSON.stringify(options.body) });
 };

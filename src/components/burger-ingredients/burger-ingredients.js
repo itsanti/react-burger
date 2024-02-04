@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import PropTypes from 'prop-types';
-import { ingredientPropTypes } from '../../utils/prop-types';
 import { SECTIONS, SHOW_INDEX_ON } from '../../utils/config';
+import { IngredientsContext } from '../../srvices/ingredients-context';
 
-const BurgerIngredients = ({ ingredients }) => {
+const BurgerIngredients = () => {
   const [showModal, setShowModal] = useState({ ingredient: null, isOpen: false });
+  const ingredients = useContext(IngredientsContext);
 
   const showModalHandler = (ingredient) => {
     setShowModal({
@@ -63,10 +63,6 @@ const BurgerIngredients = ({ ingredients }) => {
       </Modal>
     </div>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerIngredients;

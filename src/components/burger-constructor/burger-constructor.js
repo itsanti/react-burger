@@ -35,16 +35,12 @@ const BurgerConstructor = () => {
       ...constructorData.ingredients.map((ingredient) => ingredient._id),
       constructorData.bun._id,
     ];
-    requestPost('/orders', {
-      ingredients,
-    })
+    requestPost('/orders', { body: { ingredients } })
       .then((res) => {
-        if (res.success) {
-          setDetails(res);
-          setShowModal(true);
-        }
+        setDetails(res);
+        setShowModal(true);
       })
-      .catch((err) => {});
+      .catch(console.error);
   };
 
   const constructorData = useMemo(() => {
