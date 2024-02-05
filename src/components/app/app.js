@@ -24,9 +24,9 @@ function App() {
   }, []);
 
   return (
-    <main>
+    <>
       <AppHeader />
-      <section className="container">
+      <main className="container">
         {!isError && !isLoading ? (
           <IngredientsContext.Provider value={data}>
             <BurgerIngredients />
@@ -35,8 +35,8 @@ function App() {
         ) : (
           <p>{isError ? 'Произошла ошибка загрузки данных' : 'Загрузка данных'}</p>
         )}
-      </section>
-    </main>
+      </main>
+    </>
   );
 }
 
