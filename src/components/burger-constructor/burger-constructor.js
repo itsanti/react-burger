@@ -1,13 +1,14 @@
-import React, { useState, useReducer, useEffect, useMemo } from 'react';
+import React, { useReducer, useEffect, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { requestPost } from '../../utils/http';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectBurgConstructorData } from '../../services/selectors/burgconstructor';
 import { selectIngredients } from '../../services/selectors/ingredients';
+import { selectCurrentOrder } from '../../services/selectors/order';
+import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
 
 function totalPriceReducer(state, action) {
   switch (action.type) {
@@ -22,12 +23,13 @@ function totalPriceReducer(state, action) {
 }
 
 const BurgerConstructor = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [details, setDetails] = useState(null);
   const [totalPrice, dispatcher] = useReducer(totalPriceReducer, 0);
   //const constructorData = useSelector(selectBurgConstructorData);
 
   const ingredients = useSelector(selectIngredients);
+  const order = useSelector(selectCurrentOrder);
+
+  const dispatch = useDispatch();
 
   const constructorData = useMemo(() => {
     const selectedElementIds = [
@@ -43,7 +45,7 @@ const BurgerConstructor = () => {
   }, [ingredients]);
 
   const onModalClosed = () => {
-    setShowModal(false);
+    dispatch(setOrderDetails(null));
   };
 
   const onSetDetails = (constructorData) => {
@@ -52,19 +54,16 @@ const BurgerConstructor = () => {
       ...constructorData.ingredients.map((ingredient) => ingredient._id),
       constructorData.bun._id,
     ];
-    requestPost('/orders', { body: { ingredients } })
-      .then((res) => {
-        setDetails(res);
-        setShowModal(true);
-      })
-      .catch(console.error);
+    dispatch(getOrderDetails({ body: { ingredients } }));
   };
 
   useEffect(() => {
-    if (constructorData.bun !== null) {
+    if (ingredients.length) {
       dispatcher({ type: 'CALCULATE_TOTAL', payload: constructorData });
     }
-  }, [constructorData]);
+  }, [ingredients.length, constructorData]);
+
+  if (!ingredients.length) return null;
 
   return (
     <div className={styles.root}>
@@ -101,8 +100,8 @@ const BurgerConstructor = () => {
         >
           Оформить заказ
         </Button>
-        <Modal isOpen={showModal} setIsModalOpened={onModalClosed}>
-          <OrderDetails order={details?.order} />
+        <Modal isOpen={order} setIsModalOpened={onModalClosed}>
+          <OrderDetails order={order} />
         </Modal>
       </div>
     </div>
