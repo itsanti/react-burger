@@ -4,34 +4,37 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { request } from '../../utils/http';
-import { IngredientsContext } from '../../srvices/ingredients-context';
+import { useDispatch } from 'react-redux';
+import { getIngredients } from '../../services/actions/ingredients';
 
 function App() {
-  const [data, setData] = useState(null);
   const [isError, setError] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    dispatch(getIngredients());
+
     request('/ingredients')
       .then((res) => {
-        setData(res.data);
         setLoading(false);
       })
       .catch((err) => {
         setError(true);
         console.error(err);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <AppHeader />
       <main className="container">
         {!isError && !isLoading ? (
-          <IngredientsContext.Provider value={data}>
+          <>
             <BurgerIngredients />
             <BurgerConstructor />
-          </IngredientsContext.Provider>
+          </>
         ) : (
           <p>{isError ? 'Произошла ошибка загрузки данных' : 'Загрузка данных'}</p>
         )}

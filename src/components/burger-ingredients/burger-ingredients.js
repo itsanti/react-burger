@@ -1,14 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { SECTIONS, SHOW_INDEX_ON } from '../../utils/config';
-import { IngredientsContext } from '../../srvices/ingredients-context';
+import { useSelector } from 'react-redux';
 
 const BurgerIngredients = () => {
   const [showModal, setShowModal] = useState({ ingredient: null, isOpen: false });
-  const ingredients = useContext(IngredientsContext);
+  const ingredients = useSelector((store) => store.ingredients);
 
   const showModalHandler = (ingredient) => {
     setShowModal({

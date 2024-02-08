@@ -1,11 +1,12 @@
-import React, { useState, useContext, useReducer, useEffect, useMemo } from 'react';
+import React, { useState, useReducer, useEffect, useMemo } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { IngredientsContext } from '../../srvices/ingredients-context';
 import { requestPost } from '../../utils/http';
+import { useSelector } from 'react-redux';
+import { selectIngredients } from '../../services/selectors/ingredients';
 
 function totalPriceReducer(state, action) {
   switch (action.type) {
@@ -22,7 +23,7 @@ function totalPriceReducer(state, action) {
 const BurgerConstructor = () => {
   const [showModal, setShowModal] = useState(false);
   const [details, setDetails] = useState(null);
-  const ingredients = useContext(IngredientsContext);
+  const ingredients = useSelector(selectIngredients);
   const [totalPrice, dispatcher] = useReducer(totalPriceReducer, 0);
 
   const onModalClosed = () => {
