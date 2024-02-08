@@ -6,6 +6,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { requestPost } from '../../utils/http';
 import { useSelector } from 'react-redux';
+import { selectBurgConstructorData } from '../../services/selectors/burgconstructor';
 import { selectIngredients } from '../../services/selectors/ingredients';
 
 function totalPriceReducer(state, action) {
@@ -23,8 +24,23 @@ function totalPriceReducer(state, action) {
 const BurgerConstructor = () => {
   const [showModal, setShowModal] = useState(false);
   const [details, setDetails] = useState(null);
-  const ingredients = useSelector(selectIngredients);
   const [totalPrice, dispatcher] = useReducer(totalPriceReducer, 0);
+  //const constructorData = useSelector(selectBurgConstructorData);
+
+  const ingredients = useSelector(selectIngredients);
+
+  const constructorData = useMemo(() => {
+    const selectedElementIds = [
+      '643d69a5c3f7b9001cfa0944',
+      '643d69a5c3f7b9001cfa093f',
+      '643d69a5c3f7b9001cfa0947',
+      '643d69a5c3f7b9001cfa0946',
+    ];
+    return {
+      bun: ingredients.filter((ingredient) => ingredient.type === 'bun')[0],
+      ingredients: ingredients.filter((ingredient) => selectedElementIds.includes(ingredient._id)),
+    };
+  }, [ingredients]);
 
   const onModalClosed = () => {
     setShowModal(false);
@@ -44,21 +60,10 @@ const BurgerConstructor = () => {
       .catch(console.error);
   };
 
-  const constructorData = useMemo(() => {
-    const selectedElementIds = [
-      '643d69a5c3f7b9001cfa0944',
-      '643d69a5c3f7b9001cfa093f',
-      '643d69a5c3f7b9001cfa0947',
-      '643d69a5c3f7b9001cfa0946',
-    ];
-    return {
-      bun: ingredients.filter((ingredient) => ingredient.type === 'bun')[0],
-      ingredients: ingredients.filter((ingredient) => selectedElementIds.includes(ingredient._id)),
-    };
-  }, [ingredients]);
-
   useEffect(() => {
-    dispatcher({ type: 'CALCULATE_TOTAL', payload: constructorData });
+    if (constructorData.bun !== null) {
+      dispatcher({ type: 'CALCULATE_TOTAL', payload: constructorData });
+    }
   }, [constructorData]);
 
   return (

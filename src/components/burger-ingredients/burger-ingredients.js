@@ -5,10 +5,11 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { SECTIONS, SHOW_INDEX_ON } from '../../utils/config';
 import { useSelector } from 'react-redux';
+import { selectIngredients } from '../../services/selectors/ingredients';
 
 const BurgerIngredients = () => {
   const [showModal, setShowModal] = useState({ ingredient: null, isOpen: false });
-  const ingredients = useSelector((store) => store.ingredients);
+  const ingredients = useSelector(selectIngredients);
 
   const showModalHandler = (ingredient) => {
     setShowModal({
