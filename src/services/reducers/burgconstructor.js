@@ -1,3 +1,5 @@
+import { DROP_INGREDIENT } from '../actions/burgconstructor';
+
 const initialState = {
   bun: null,
   ingredients: [],
@@ -5,9 +7,14 @@ const initialState = {
 
 export const reducerBurgConstructor = (state = initialState, action) => {
   switch (action.type) {
-    case action.type:
-      console.log('reducerBurgConstructor: not implemented');
-      return state;
+    case DROP_INGREDIENT:
+      const newState = { ...state };
+      if (action.payload.type === 'bun') {
+        newState.bun = action.payload;
+      } else {
+        newState.ingredients = [...newState.ingredients, action.payload];
+      }
+      return newState;
     default:
       return state;
   }

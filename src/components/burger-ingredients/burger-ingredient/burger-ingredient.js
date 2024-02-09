@@ -1,13 +1,37 @@
 import React from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { SHOW_INDEX_ON } from '../../../utils/config';
 import styles from './burger-ingredient.module.css';
+import { useDrag } from 'react-dnd';
+import { useDispatch, useSelector } from 'react-redux';
+import { dropIngredient } from '../../../services/actions/burgconstructor';
+import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
 
 const BurgerIngredient = ({ ingredient, setIngredientHandler, current }) => {
+  const dispatch = useDispatch();
+  const countersMap = useSelector(selectIngredientsCount);
+
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'ingredient',
+    item: { id: ingredient._id },
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        dispatch(dropIngredient(ingredient));
+        console.log(countersMap);
+        console.log(`You dropped ${item.id} into ${dropResult.name}!`);
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  const opacity = isDragging ? 0.2 : 1;
+
   return (
-    <div className={styles.Ingredient} onClick={() => setIngredientHandler(ingredient)}>
-      {SHOW_INDEX_ON.includes(current) && <Counter count={1} size="default" />}
-      <img src={ingredient.image_large} alt={ingredient.name} className={styles.IngredientImage} />
+    <div style={{ opacity }} className={styles.Ingredient} onClick={() => setIngredientHandler(ingredient)}>
+      {countersMap[ingredient._id] && <Counter count={countersMap[ingredient._id]} size="default" />}
+      <img ref={drag} src={ingredient.image_large} alt={ingredient.name} className={styles.IngredientImage} />
       <p className={styles.price}>
         <span>{ingredient.price}</span>
         <CurrencyIcon type="primary" />

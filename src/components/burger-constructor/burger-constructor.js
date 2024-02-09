@@ -9,6 +9,7 @@ import { selectBurgConstructorData } from '../../services/selectors/burgconstruc
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { selectCurrentOrder } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
+import { useDrop } from 'react-dnd';
 
 function totalPriceReducer(state, action) {
   switch (action.type) {
@@ -23,6 +24,15 @@ function totalPriceReducer(state, action) {
 }
 
 const BurgerConstructor = () => {
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: 'ingredient',
+    drop: () => ({ name: 'BurgerConstructor' }),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
+
   const [totalPrice, dispatcher] = useReducer(totalPriceReducer, 0);
   //const constructorData = useSelector(selectBurgConstructorData);
 
@@ -66,7 +76,7 @@ const BurgerConstructor = () => {
   if (!ingredients.length) return null;
 
   return (
-    <div className={styles.root}>
+    <div ref={drop} className={styles.root}>
       <ConstructorElement
         type="top"
         isLocked={true}
