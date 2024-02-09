@@ -20,34 +20,6 @@
   grid-column: 1 / span 2;
 }
 
-.Ingredient {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-}
-
-.IngredientImage {
-  width: 272px;
-}
-
-.price {
-  display: flex;
-  align-items: center;
-}
-
-.price span {
-  font-family: 'Iceland', sans-serif;
-  font-size: 28px;
-  padding-right: 8px;
-}
-
-.name {
-  margin-top: 8px;
-  margin-bottom: 24px;
-}
-
 .IngredientContainer {
   max-height: 600px;
   overflow-y: scroll;

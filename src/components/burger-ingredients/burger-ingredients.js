@@ -1,13 +1,14 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { SECTIONS, SHOW_INDEX_ON } from '../../utils/config';
+import { SECTIONS } from '../../utils/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { setIngredient } from '../../services/actions/current-ingredient';
 import { selectCurrentIngredient } from '../../services/selectors/current-ingredient';
+import BurgerIngredient from './burger-ingredient/burger-ingredient';
 
 const BurgerIngredients = () => {
   const sections = [useRef(), useRef(), useRef()];
@@ -67,15 +68,12 @@ const BurgerIngredients = () => {
                 .filter((item) => item.type === type[0])
                 .map((ingredient, index) => {
                   return (
-                    <div className={styles.Ingredient} key={index} onClick={() => setIngredientHandler(ingredient)}>
-                      {SHOW_INDEX_ON.includes(index) && <Counter count={1} size="default" />}
-                      <img src={ingredient.image_large} alt={ingredient.name} className={styles.IngredientImage} />
-                      <p className={styles.price}>
-                        <span>{ingredient.price}</span>
-                        <CurrencyIcon type="primary" />
-                      </p>
-                      <p className={styles.name}>{ingredient.name}</p>
-                    </div>
+                    <BurgerIngredient
+                      key={index}
+                      current={index}
+                      ingredient={ingredient}
+                      setIngredientHandler={setIngredientHandler}
+                    />
                   );
                 })}
             </section>
