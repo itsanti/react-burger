@@ -12,13 +12,11 @@ const BurgerIngredient = ({ ingredient, setIngredientHandler, current }) => {
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'ingredient',
-    item: { id: ingredient._id },
+    item: { id: ingredient._id, type: ingredient.type },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
         dispatch(dropIngredient(ingredient));
-        console.log(countersMap);
-        console.log(`You dropped ${item.id} into ${dropResult.name}!`);
       }
     },
     collect: (monitor) => ({
@@ -30,7 +28,7 @@ const BurgerIngredient = ({ ingredient, setIngredientHandler, current }) => {
 
   return (
     <div style={{ opacity }} className={styles.Ingredient} onClick={() => setIngredientHandler(ingredient)}>
-      {countersMap[ingredient._id] && <Counter count={countersMap[ingredient._id]} size="default" />}
+      {countersMap && countersMap[ingredient._id] && <Counter count={countersMap[ingredient._id]} size="default" />}
       <img ref={drag} src={ingredient.image_large} alt={ingredient.name} className={styles.IngredientImage} />
       <p className={styles.price}>
         <span>{ingredient.price}</span>

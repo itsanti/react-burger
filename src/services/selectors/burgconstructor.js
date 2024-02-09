@@ -7,7 +7,9 @@ export const selectIngredients = (state) => selectBurgConstructorModule(state).i
 export const selectBun = (state) => selectBurgConstructorModule(state).bun;
 
 export const selectIngredientsCount = (state) => {
-  // const items = selectBurgConstructorData(state);
+  if (!selectBun(state)) {
+    return null;
+  }
   const countersMap = {};
   countersMap[selectBun(state)._id] = 2;
   for (let ingredient of selectIngredients(state)) {

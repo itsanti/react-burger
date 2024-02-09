@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useMemo } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,9 +6,9 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectBurgConstructorData } from '../../services/selectors/burgconstructor';
-import { selectIngredients } from '../../services/selectors/ingredients';
 import { selectCurrentOrder } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
+import { delBun, delIngredientByUuid } from '../../services/actions/burgconstructor';
 import { useDrop } from 'react-dnd';
 
 function totalPriceReducer(state, action) {
@@ -24,35 +24,31 @@ function totalPriceReducer(state, action) {
 }
 
 const BurgerConstructor = () => {
-  const [{ canDrop, isOver }, drop] = useDrop(() => ({
-    accept: 'ingredient',
-    drop: () => ({ name: 'BurgerConstructor' }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
+  const constructorData = useSelector(selectBurgConstructorData);
+
+  const [, drop] = useDrop(
+    () => ({
+      accept: 'ingredient',
+      canDrop: (item) => {
+        return constructorData?.bun || item.type === 'bun';
+      },
     }),
-  }));
+    [constructorData],
+  );
 
   const [totalPrice, dispatcher] = useReducer(totalPriceReducer, 0);
-  //const constructorData = useSelector(selectBurgConstructorData);
 
-  const ingredients = useSelector(selectIngredients);
   const order = useSelector(selectCurrentOrder);
 
   const dispatch = useDispatch();
 
-  const constructorData = useMemo(() => {
-    const selectedElementIds = [
-      '643d69a5c3f7b9001cfa0944',
-      '643d69a5c3f7b9001cfa093f',
-      '643d69a5c3f7b9001cfa0947',
-      '643d69a5c3f7b9001cfa0946',
-    ];
-    return {
-      bun: ingredients.filter((ingredient) => ingredient.type === 'bun')[0],
-      ingredients: ingredients.filter((ingredient) => selectedElementIds.includes(ingredient._id)),
-    };
-  }, [ingredients]);
+  const handleClose = (type, uuid) => {
+    if (type === 'bun') {
+      dispatch(delBun());
+    } else {
+      dispatch(delIngredientByUuid(uuid));
+    }
+  };
 
   const onModalClosed = () => {
     dispatch(setOrderDetails(null));
@@ -68,33 +64,58 @@ const BurgerConstructor = () => {
   };
 
   useEffect(() => {
-    if (ingredients.length) {
+    if (constructorData.ingredients.length) {
       dispatcher({ type: 'CALCULATE_TOTAL', payload: constructorData });
     }
-  }, [ingredients.length, constructorData]);
+  }, [constructorData]);
 
-  if (!ingredients.length) return null;
+  if (!constructorData.bun) {
+    return (
+      <div ref={drop} className={styles.root}>
+        <section className={styles.dropArea}>Drop bun here...</section>
+      </div>
+    );
+  }
 
   return (
     <div ref={drop} className={styles.root}>
       <ConstructorElement
         type="top"
-        isLocked={true}
+        isLocked={constructorData.ingredients.length}
         text={constructorData.bun.name + ' (верх)'}
         price={constructorData.bun.price}
         thumbnail={constructorData.bun.image}
+        extraClass={styles.elementTop}
+        handleClose={() => {
+          handleClose('bun');
+        }}
       />
-      {constructorData.ingredients.map((element) => {
-        return (
-          <ConstructorElement text={element.name} price={element.price} thumbnail={element.image} key={element._id} />
-        );
-      })}
+      <div className={`${styles.container} ${constructorData.ingredients.length ? '' : styles.containerEmpty}`}>
+        {constructorData.ingredients.map((element) => {
+          return (
+            <ConstructorElement
+              text={element.name}
+              price={element.price}
+              thumbnail={element.image}
+              key={element.uuid}
+              extraClass={styles.element}
+              handleClose={() => {
+                handleClose(element.type, element.uuid);
+              }}
+            />
+          );
+        })}
+      </div>
       <ConstructorElement
         type="bottom"
-        isLocked={true}
+        isLocked={constructorData.ingredients.length}
         text={constructorData.bun.name + ' (низ)'}
         price={constructorData.bun.price}
         thumbnail={constructorData.bun.image}
+        extraClass={styles.element}
+        handleClose={() => {
+          handleClose('bun');
+        }}
       />
       <div className={styles.footer + ' mt-1'}>
         <div className={styles.totalPrice}>

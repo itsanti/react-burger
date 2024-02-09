@@ -14,8 +14,14 @@ body {
   padding: 0;
 }
 
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--thumb-color) var(--track-color);
+  }
+}
+
 body {
-  min-height: 100vh;
   background: var(--interface-bg, #131316);
 
   /* desktop/text */
