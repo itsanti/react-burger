@@ -1,30 +1,20 @@
-import React, { useReducer, useEffect } from 'react';
+import React from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectBurgConstructorData } from '../../services/selectors/burgconstructor';
+import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
 import { selectCurrentOrder } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
 import { delBun, delIngredientByUuid } from '../../services/actions/burgconstructor';
 import { useDrop } from 'react-dnd';
 
-function totalPriceReducer(state, action) {
-  switch (action.type) {
-    case 'CALCULATE_TOTAL':
-      return (
-        action.payload.bun.price * 2 +
-        action.payload.ingredients.reduce((sum, ingredient) => (sum += ingredient.price), 0)
-      );
-    default:
-      return state;
-  }
-}
-
 const BurgerConstructor = () => {
   const constructorData = useSelector(selectBurgConstructorData);
+  const totalPrice = useSelector(selectTotalPrice);
+  const order = useSelector(selectCurrentOrder);
 
   const [, drop] = useDrop(
     () => ({
@@ -35,10 +25,6 @@ const BurgerConstructor = () => {
     }),
     [constructorData],
   );
-
-  const [totalPrice, dispatcher] = useReducer(totalPriceReducer, 0);
-
-  const order = useSelector(selectCurrentOrder);
 
   const dispatch = useDispatch();
 
@@ -62,12 +48,6 @@ const BurgerConstructor = () => {
     ];
     dispatch(getOrderDetails({ body: { ingredients } }));
   };
-
-  useEffect(() => {
-    if (constructorData.ingredients.length) {
-      dispatcher({ type: 'CALCULATE_TOTAL', payload: constructorData });
-    }
-  }, [constructorData]);
 
   if (!constructorData.bun) {
     return (

@@ -17,3 +17,14 @@ export const selectIngredientsCount = (state) => {
   }
   return countersMap;
 };
+
+export const selectTotalPrice = (state) => {
+  let totalPrice = 0;
+  if (!selectBun(state)) {
+    return totalPrice;
+  }
+
+  totalPrice += selectBun(state).price * 2;
+  totalPrice += selectIngredients(state).reduce((sum, ingredient) => (sum += ingredient.price), 0);
+  return totalPrice;
+};
