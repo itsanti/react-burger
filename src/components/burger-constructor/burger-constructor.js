@@ -10,6 +10,7 @@ import { selectCurrentOrder } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
 import { delBun, delIngredientByUuid } from '../../services/actions/burgconstructor';
 import { useDrop } from 'react-dnd';
+import BurgerConstructorElement from './burger-constructor-element/burger-constructor-element';
 
 const BurgerConstructor = () => {
   const constructorData = useSelector(selectBurgConstructorData);
@@ -71,20 +72,15 @@ const BurgerConstructor = () => {
         }}
       />
       <div className={`${styles.container} ${constructorData.ingredients.length ? '' : styles.containerEmpty}`}>
-        {constructorData.ingredients.map((element) => {
-          return (
-            <ConstructorElement
-              text={element.name}
-              price={element.price}
-              thumbnail={element.image}
-              key={element.uuid}
-              extraClass={styles.element}
-              handleClose={() => {
-                handleClose(element.type, element.uuid);
-              }}
-            />
-          );
-        })}
+        {constructorData.ingredients.map((element, index) => (
+          <BurgerConstructorElement
+            key={element.uuid}
+            index={index}
+            element={element}
+            styles={styles}
+            handleClose={handleClose}
+          />
+        ))}
       </div>
       <ConstructorElement
         type="bottom"

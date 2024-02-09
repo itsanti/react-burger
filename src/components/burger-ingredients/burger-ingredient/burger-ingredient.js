@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { dropIngredient } from '../../../services/actions/burgconstructor';
 import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
 
-const BurgerIngredient = ({ ingredient, setIngredientHandler, current }) => {
+const BurgerIngredient = ({ ingredient, setIngredientHandler }) => {
   const dispatch = useDispatch();
   const countersMap = useSelector(selectIngredientsCount);
 
