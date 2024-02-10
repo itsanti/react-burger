@@ -23,7 +23,5 @@
 .IngredientContainer {
   max-height: 600px;
   overflow-y: scroll;
-  scrollbar-width: thin;
-  scrollbar-color: #8585ad #2f2f37;
   padding-right: 10px;
 }

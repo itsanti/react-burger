@@ -23,8 +23,6 @@
   overflow-y: auto;
   width: calc(100% - 70px);
   padding: 0 10px;
-  scrollbar-width: thin;
-  scrollbar-color: #8585ad #2f2f37;
 }
 
 .containerEmpty {

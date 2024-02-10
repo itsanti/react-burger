@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-element.module.css';
@@ -56,6 +56,7 @@ const BurgerConstructorElement = ({ index, element, handleClose }) => {
   drag(drop(ref));
   return (
     <div ref={ref} data-handler-id={handlerId} style={{ opacity }} className={styles.root}>
+      <DragIcon type="primary" />
       <ConstructorElement
         text={element.name}
         price={element.price}

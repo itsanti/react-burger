@@ -57,7 +57,7 @@ const BurgerIngredients = () => {
           Начинки
         </Tab>
       </div>
-      <div onScroll={scrollHandler} className={styles.IngredientContainer + ' custom-scroll'}>
+      <div onScroll={scrollHandler} className={styles.IngredientContainer}>
         {SECTIONS.map((type, ix) => {
           return (
             <section className={styles.tabSection} key={ix}>

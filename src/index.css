@@ -12,13 +12,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  html {
-    scrollbar-width: thin;
-    scrollbar-color: var(--thumb-color) var(--track-color);
-  }
+  /* scrollbar-width: thin;
+  scrollbar-color: #8585ad #2f2f37; */
 }
 
 body {
@@ -34,4 +29,17 @@ body {
 
 a {
   text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid #8585ad;
+  background: #8585ad;
 }
