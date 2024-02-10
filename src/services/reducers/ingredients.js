@@ -18,7 +18,7 @@ export const reducerIngredients = (state = initialState, action) => {
       return { ...state, isError: false, isLoading: false, ingredients: action.payload };
     }
     case GET_INGREDIENTS_FAILED: {
-      return { ...state, isError: true, isLoading: false };
+      return { ...initialState, isError: true };
     }
     default:
       return state;

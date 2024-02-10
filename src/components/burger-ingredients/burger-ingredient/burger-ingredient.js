@@ -5,6 +5,8 @@ import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { dropIngredient } from '../../../services/actions/burgconstructor';
 import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
+import PropTypes from 'prop-types';
+import { ingredientPropTypes } from '../../../utils/prop-types';
 
 const BurgerIngredient = ({ ingredient, setIngredientHandler }) => {
   const dispatch = useDispatch();
@@ -38,4 +40,10 @@ const BurgerIngredient = ({ ingredient, setIngredientHandler }) => {
     </div>
   );
 };
+
+BurgerIngredient.propTypes = {
+  ingredient: ingredientPropTypes.isRequired,
+  setIngredientHandler: PropTypes.func.isRequired,
+};
+
 export default BurgerIngredient;

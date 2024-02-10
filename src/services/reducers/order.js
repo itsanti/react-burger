@@ -21,7 +21,7 @@ export const reducerOrder = (state = initialState, action) => {
       return { ...state, isError: false, isLoading: false, orderDetails: action.payload };
     }
     case POST_ORDER_FAILED: {
-      return { ...state, isError: true, isLoading: false };
+      return { ...initialState, isError: true };
     }
     default:
       return state;

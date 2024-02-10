@@ -4,6 +4,8 @@ import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-element.module.css';
 import { sortIngredients } from '../../../services/actions/burgconstructor';
+import PropTypes from 'prop-types';
+import { ingredientPropTypes } from '../../../utils/prop-types';
 
 const BurgerConstructorElement = ({ index, element, handleClose }) => {
   const ref = useRef(null);
@@ -61,6 +63,12 @@ const BurgerConstructorElement = ({ index, element, handleClose }) => {
       />
     </div>
   );
+};
+
+BurgerConstructorElement.propTypes = {
+  index: PropTypes.number.isRequired,
+  element: ingredientPropTypes.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default BurgerConstructorElement;
