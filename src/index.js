@@ -21,13 +21,11 @@ const store = createStore(rootReducer, enhancer);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <>
-    {/*<React.StrictMode>*/}
+  <React.StrictMode>
     <Provider store={store}>
       <DndProvider backend={HTML5Backend}>
         <App />
       </DndProvider>
     </Provider>
-    {/*</React.StrictMode>*/}
-  </>,
+  </React.StrictMode>,
 );

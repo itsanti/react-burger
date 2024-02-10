@@ -49,6 +49,9 @@ const BurgerConstructorElement = ({ index, element, handleClose }) => {
       isDragging: monitor.isDragging(),
     }),
   });
+  const handleCloseElement = (element) => {
+    handleClose(element.type, element.uuid);
+  };
   const opacity = isDragging ? 0.2 : 1;
   drag(drop(ref));
   return (
@@ -57,9 +60,7 @@ const BurgerConstructorElement = ({ index, element, handleClose }) => {
         text={element.name}
         price={element.price}
         thumbnail={element.image}
-        handleClose={() => {
-          handleClose(element.type, element.uuid);
-        }}
+        handleClose={() => handleCloseElement(element)}
       />
     </div>
   );

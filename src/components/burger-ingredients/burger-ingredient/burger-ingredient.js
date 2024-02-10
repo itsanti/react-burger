@@ -5,10 +5,10 @@ import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { dropIngredient } from '../../../services/actions/burgconstructor';
 import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
-import PropTypes from 'prop-types';
 import { ingredientPropTypes } from '../../../utils/prop-types';
+import { setIngredient } from '../../../services/actions/current-ingredient';
 
-const BurgerIngredient = ({ ingredient, setIngredientHandler }) => {
+const BurgerIngredient = ({ ingredient }) => {
   const dispatch = useDispatch();
   const countersMap = useSelector(selectIngredientsCount);
 
@@ -25,6 +25,10 @@ const BurgerIngredient = ({ ingredient, setIngredientHandler }) => {
       isDragging: monitor.isDragging(),
     }),
   }));
+
+  const setIngredientHandler = (ingredient) => {
+    dispatch(setIngredient(ingredient));
+  };
 
   const opacity = isDragging ? 0.2 : 1;
 
@@ -43,7 +47,6 @@ const BurgerIngredient = ({ ingredient, setIngredientHandler }) => {
 
 BurgerIngredient.propTypes = {
   ingredient: ingredientPropTypes.isRequired,
-  setIngredientHandler: PropTypes.func.isRequired,
 };
 
 export default BurgerIngredient;
