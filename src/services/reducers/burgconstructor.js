@@ -1,4 +1,5 @@
-import { DROP_INGREDIENT, DEL_INGREDIENT, DEL_BUN } from '../actions/burgconstructor';
+import { DROP_INGREDIENT, DEL_INGREDIENT, DEL_BUN, SORT_INGREDIENTS } from '../actions/burgconstructor';
+import { swapElements } from '../../utils/utils';
 
 const initialState = {
   bun: null,
@@ -7,6 +8,9 @@ const initialState = {
 
 export const reducerBurgConstructor = (state = initialState, action) => {
   switch (action.type) {
+    case SORT_INGREDIENTS:
+      const swaped = swapElements(state.ingredients, action.payload.dragIndex, action.payload.hoverIndex);
+      return { ...state, ingredients: swaped };
     case DEL_BUN:
       return { ...state, bun: null };
     case DEL_INGREDIENT:

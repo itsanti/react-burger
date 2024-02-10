@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
+import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-element.module.css';
+import { sortIngredients } from '../../../services/actions/burgconstructor';
 
 const BurgerConstructorElement = ({ index, element, handleClose }) => {
   const ref = useRef(null);
+  const dispatch = useDispatch();
   const [{ handlerId }, drop] = useDrop({
     accept: 'constructor-element',
     collect(monitor) {
@@ -31,8 +34,8 @@ const BurgerConstructorElement = ({ index, element, handleClose }) => {
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
+      dispatch(sortIngredients(dragIndex, hoverIndex));
       item.index = hoverIndex;
-      console.log('dispatch', dragIndex, hoverIndex);
     },
   });
   const [{ isDragging }, drag] = useDrag({
