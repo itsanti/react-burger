@@ -1,72 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import PropTypes from 'prop-types';
-import { ingredientPropTypes } from '../../utils/prop-types';
-import { SECTIONS, SHOW_INDEX_ON } from '../../utils/config';
+import { SECTIONS } from '../../utils/config';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectIngredients } from '../../services/selectors/ingredients';
+import { setIngredient } from '../../services/actions/current-ingredient';
+import { selectCurrentIngredient } from '../../services/selectors/current-ingredient';
+import BurgerIngredient from './burger-ingredient/burger-ingredient';
 
-const BurgerIngredients = ({ ingredients }) => {
-  const [showModal, setShowModal] = useState({ ingredient: null, isOpen: false });
+const BurgerIngredients = () => {
+  const sections = [useRef(), useRef(), useRef()];
+  const ingredients = useSelector(selectIngredients);
+  const currentIngredient = useSelector(selectCurrentIngredient);
 
-  const showModalHandler = (ingredient) => {
-    setShowModal({
-      ingredient,
-      isOpen: true,
-    });
+  const [activeTab, setActiveTab] = useState('bun');
+
+  const dispatch = useDispatch();
+
+  const setIngredientHandler = (ingredient) => {
+    dispatch(setIngredient(ingredient));
   };
 
   const onModalClosed = () => {
-    setShowModal({
-      ingredient: null,
-      isOpen: false,
-    });
+    dispatch(setIngredient(null));
+  };
+
+  const scrollToHandler = (sectionName) => {
+    sections
+      .filter((section) => section.current.dataset.type === sectionName)
+      .at(0)
+      .current.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollHandler = (ev) => {
+    const whoMap = {};
+    for (let section of sections) {
+      whoMap[Math.abs(ev.target.offsetTop - section.current.getBoundingClientRect().top)] = section;
+    }
+    const min = Math.min(...Object.keys(whoMap));
+    setActiveTab(whoMap[min].current.dataset.type);
   };
 
   return (
     <div className={styles.root}>
       <h1 className={styles.mainHeader + ' mt-10 mb-5'}>Соберите бургер</h1>
       <div className={styles.tabs + ' mb-10'}>
-        <Tab value="one" active>
+        <Tab value="bun" active={activeTab === 'bun'} onClick={scrollToHandler}>
           Булки
         </Tab>
-        <Tab value="two">Соусы</Tab>
-        <Tab value="three">Начинки</Tab>
+        <Tab value="sauce" active={activeTab === 'sauce'} onClick={scrollToHandler}>
+          Соусы
+        </Tab>
+        <Tab value="main" active={activeTab === 'main'} onClick={scrollToHandler}>
+          Начинки
+        </Tab>
       </div>
-      <div className={styles.IngredientContainer}>
+      <div onScroll={scrollHandler} className={styles.IngredientContainer}>
         {SECTIONS.map((type, ix) => {
           return (
             <section className={styles.tabSection} key={ix}>
-              <h2 className={styles.tabSectionHeader}>{type[1]}</h2>
+              <h2 ref={sections[ix]} data-type={type[0]} className={styles.tabSectionHeader}>
+                {type[1]}
+              </h2>
               {ingredients
                 .filter((item) => item.type === type[0])
                 .map((ingredient, index) => {
                   return (
-                    <div className={styles.Ingredient} key={index} onClick={() => showModalHandler(ingredient)}>
-                      {SHOW_INDEX_ON.includes(index) && <Counter count={1} size="default" />}
-                      <img src={ingredient.image_large} alt={ingredient.name} className={styles.IngredientImage} />
-                      <p className={styles.price}>
-                        <span>{ingredient.price}</span>
-                        <CurrencyIcon type="primary" />
-                      </p>
-                      <p className={styles.name}>{ingredient.name}</p>
-                    </div>
+                    <BurgerIngredient
+                      key={index}
+                      current={index}
+                      ingredient={ingredient}
+                      setIngredientHandler={setIngredientHandler}
+                    />
                   );
                 })}
             </section>
           );
         })}
       </div>
-      <Modal title="Детали ингредиента" isOpen={showModal.isOpen} setIsModalOpened={onModalClosed}>
-        <IngredientDetails ingredient={showModal.ingredient} />
+      <Modal title="Детали ингредиента" isOpen={currentIngredient} setIsModalOpened={onModalClosed}>
+        <IngredientDetails ingredient={currentIngredient} />
       </Modal>
     </div>
   );
-};
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientPropTypes),
 };
 
 export default BurgerIngredients;

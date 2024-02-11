@@ -5,5 +5,3 @@ export const SECTIONS = [
   ['sauce', 'Соусы'],
   ['main', 'Начинки'],
 ];
-
-export const SHOW_INDEX_ON = [0, 3];

@@ -12,10 +12,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+  /* scrollbar-width: thin;
+  scrollbar-color: #8585ad #2f2f37; */
 }
 
 body {
-  min-height: 100vh;
   background: var(--interface-bg, #131316);
 
   /* desktop/text */
@@ -28,4 +29,17 @@ body {
 
 a {
   text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2f2f37;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid #8585ad;
+  background: #8585ad;
 }
