@@ -107,9 +107,11 @@ const BurgerConstructor = () => {
         >
           Оформить заказ
         </Button>
-        <Modal isOpen={order} setIsModalOpened={onModalClosed}>
-          <OrderDetails order={order} />
-        </Modal>
+        {order && (
+          <Modal setIsModalOpened={onModalClosed}>
+            <OrderDetails order={order} />
+          </Modal>
+        )}
       </div>
     </div>
   );

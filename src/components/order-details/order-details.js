@@ -4,7 +4,6 @@ import done from '../../images/done.png';
 import { orderDetailsPropTypes } from '../../utils/prop-types';
 
 const OrderDetails = ({ order }) => {
-  if (!order) return null;
   return (
     <div className={styles.root}>
       <p className={styles.orderSum}>{order.number}</p>
