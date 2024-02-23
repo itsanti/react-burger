@@ -1,4 +1,6 @@
 import Home from './home';
+import Login from './login';
+import Profile from './profile';
 import NoMatch from './no-match';
 
-export { Home, NoMatch };
+export { Home, Login, Profile, NoMatch };

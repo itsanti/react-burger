@@ -7,9 +7,10 @@ import { selectIngredientsLoading, selectIngredientsError } from '../../services
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { selectCurrentIngredient } from '../../services/selectors/current-ingredient';
 import { setIngredient } from '../../services/actions/current-ingredient';
-import { Home, NoMatch } from '../../pages';
+import { Home, Login, NoMatch, Profile } from '../../pages';
+import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
+import { checkUserAuth } from '../../services/actions/auth';
 
 function App() {
   const isLoading = useSelector(selectIngredientsLoading);
@@ -17,9 +18,6 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-
-  const currentIngredient = useSelector(selectCurrentIngredient);
-  console.log(currentIngredient);
 
   const state = location.state;
 
@@ -30,6 +28,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
   return (
@@ -41,6 +40,8 @@ function App() {
             <Routes location={state?.backgroundLocation || location}>
               <Route path="/" element={<Home />} />
               <Route path="/ingredients/:id" element={<IngredientDetails />} />
+              <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
+              <Route path="/profile" element={<OnlyAuth component={<Profile />} />} />
               <Route path="*" element={<NoMatch />} />
             </Routes>
             {state?.backgroundLocation && (
