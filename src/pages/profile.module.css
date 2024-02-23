@@ -1,0 +1,25 @@
+.root {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 40px;
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 344px;
+  margin-top: 80px;
+}
+
+.help {
+  margin-top: auto;
+}
+
+.link {
+  color: var(--text-dark-grey-secondary-text);
+}
+
+.active,
+.link:hover {
+  color: #fff;
+}
