@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
 import styles from './user-edit.module.css';
 
 const UserEdit = () => {
