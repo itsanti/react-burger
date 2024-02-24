@@ -1,4 +1,4 @@
-import { SET_AUTH_CHECKED, GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_FAILED } from '../actions/auth';
+import { SET_USER, SET_AUTH_CHECKED, GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_FAILED } from '../actions/auth';
 
 const initialState = {
   isAuthChecked: false,
@@ -7,6 +7,9 @@ const initialState = {
 
 export const reducerAuth = (state = initialState, action) => {
   switch (action.type) {
+    case SET_USER: {
+      return { ...state, user: action.payload };
+    }
     case SET_AUTH_CHECKED: {
       return { ...state, isAuthChecked: true };
     }

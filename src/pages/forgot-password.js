@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
-import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './forgot-password.module.css';
+import { useDispatch } from 'react-redux';
+import { forgotPassword } from '../services/actions/auth';
 
 const ForgotPassword = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { values, handleChange } = useForm({
     email: '',
@@ -21,9 +25,9 @@ const ForgotPassword = () => {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    console.log(values);
-    // dispatch(handleLogin(formValue.email, formValue.password));
-    // navigate('/', {replace: true});
+    dispatch(forgotPassword(values.email)).then((res) => {
+      navigate('/reset-password', { replace: true, state: { from: '/forgot-password' } });
+    });
   };
 
   return (

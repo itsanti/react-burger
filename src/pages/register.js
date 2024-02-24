@@ -3,10 +3,14 @@ import { useForm } from '../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './register.module.css';
+import { useDispatch } from 'react-redux';
+import { authRegister, setUser } from '../services/actions/auth';
 
 const Register = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [error, setError] = useState({ isSet: false, msg: '' });
+  const dispatch = useDispatch();
 
   const initialFormState = useMemo(
     () => ({
@@ -19,6 +23,11 @@ const Register = () => {
 
   const { values, handleChange } = useForm(initialFormState);
 
+  const handleChangeWithError = (ev) => {
+    setError({ isSet: false, msg: '' });
+    handleChange(ev);
+  };
+
   useEffect(() => {
     if (!(values.email && values.password && values.name)) {
       setIsButtonDisabled(true);
@@ -29,9 +38,18 @@ const Register = () => {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    console.log(values);
-    // dispatch(handleLogin(formValue.email, formValue.password));
-    // navigate('/', {replace: true});
+    dispatch(authRegister(values))
+      .then((res) => {
+        dispatch(setUser({ ...res.user, password: values.password }));
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+      })
+      .catch((err) => {
+        setError({
+          isSet: true,
+          msg: err.message,
+        });
+      });
   };
 
   return (
@@ -51,10 +69,11 @@ const Register = () => {
         <EmailInput
           type={'email'}
           placeholder={'E-mail'}
-          onChange={handleChange}
+          onChange={handleChangeWithError}
           value={values.email}
           name={'email'}
-          error={false}
+          error={error.isSet}
+          errorText={error.msg}
           size={'default'}
           extraClass="mt-6"
         />

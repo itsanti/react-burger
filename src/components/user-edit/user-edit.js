@@ -1,47 +1,44 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './user-edit.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUser } from '../../services/selectors/auth';
+import { editUser, setUser } from '../../services/actions/auth';
 
 const UserEdit = () => {
-  const [isNotEdit, setIsEdit] = useState(true);
+  const [isNotEdit, setIsNotEdit] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [isShowButtons, setIsShowButtons] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
-  const initialFormState = useMemo(
-    () => ({
-      name: '',
-      email: '',
-      password: '',
-    }),
-    [],
-  );
-
-  const { values, handleChange, setValues } = useForm(initialFormState);
+  const { values, handleChange, setValues } = useForm(user);
 
   const onResetChanges = () => {
-    setValues(initialFormState);
+    setValues(user);
+    setIsNotEdit(true);
   };
 
   const onIconClick = (ev, name) => {
     if (!isNotEdit && name === 'password') {
       setIsPasswordVisible(!isPasswordVisible);
     } else {
-      setIsEdit(!isNotEdit);
+      setIsNotEdit(!isNotEdit);
     }
   };
 
   useEffect(() => {
     const { name, email, password } = values;
-    const { name: initName, email: initEmail, password: initPassword } = initialFormState;
+    const { name: initName, email: initEmail, password: initPassword } = user;
 
     if (name !== initName || email !== initEmail || password !== initPassword) {
       setIsShowButtons(true);
     } else {
       setIsShowButtons(false);
     }
-  }, [values, initialFormState]);
+  }, [values, user]);
 
   useEffect(() => {
     if (!(values.name && values.email && values.password)) {
@@ -53,9 +50,20 @@ const UserEdit = () => {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    console.log(values);
-    // dispatch(handleLogin(formValue.email, formValue.password));
-    // navigate('/', {replace: true});
+    const patch = {};
+    if (values.name !== user.name) {
+      patch.name = values.name;
+    }
+    if (values.email !== user.email) {
+      patch.email = values.email;
+    }
+    if (values.password !== user.password) {
+      patch.password = values.password;
+    }
+    dispatch(editUser(patch)).then((res) => {
+      dispatch(setUser({ ...res.user, password: values.password }));
+      setIsNotEdit(true);
+    });
   };
 
   return (
@@ -73,6 +81,7 @@ const UserEdit = () => {
           icon={'EditIcon'}
           onIconClick={onIconClick}
           readOnly={isNotEdit}
+          disabled={isNotEdit}
         />
         <EmailInput
           type={'email'}
@@ -86,6 +95,7 @@ const UserEdit = () => {
           icon={'EditIcon'}
           onIconClick={onIconClick}
           readOnly={isNotEdit}
+          disabled={isNotEdit}
         />
         <Input
           type={isPasswordVisible ? 'text' : 'password'}
@@ -99,6 +109,7 @@ const UserEdit = () => {
           size={'default'}
           extraClass="mt-6"
           readOnly={isNotEdit}
+          disabled={isNotEdit}
         />
         {isShowButtons && (
           <div className={styles.formFooter}>

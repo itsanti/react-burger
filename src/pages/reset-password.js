@@ -1,20 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
-import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
+import { useDispatch } from 'react-redux';
+import { resetPassword } from '../services/actions/auth';
 
 const ResetPassword = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [error, setError] = useState({ isSet: false, msg: '' });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const { values, handleChange } = useForm({
     password: '',
-    code: '',
+    token: '',
   });
 
+  const handleChangeWithError = (ev) => {
+    setError({ isSet: false, msg: '' });
+    handleChange(ev);
+  };
+
   useEffect(() => {
-    if (!(values.password && values.code)) {
+    if (location.state?.from !== '/forgot-password') {
+      return navigate('/forgot-password');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!(values.password && values.token)) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);
@@ -23,9 +40,16 @@ const ResetPassword = () => {
 
   const handleSubmit = (ev) => {
     ev.preventDefault();
-    console.log(values);
-    // dispatch(handleLogin(formValue.email, formValue.password));
-    // navigate('/', {replace: true});
+    dispatch(resetPassword(values))
+      .then((res) => {
+        navigate('/login', { replace: true });
+      })
+      .catch((err) => {
+        setError({
+          isSet: true,
+          msg: err.message,
+        });
+      });
   };
 
   return (
@@ -47,10 +71,11 @@ const ResetPassword = () => {
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={handleChange}
-          value={values.code}
-          name={'code'}
-          error={false}
+          onChange={handleChangeWithError}
+          value={values.token}
+          name={'token'}
+          error={error.isSet}
+          errorText={error.msg}
           size={'default'}
           extraClass="mt-6"
         />

@@ -1,4 +1,5 @@
 import { API_URL } from './config';
+import { refreshToken } from '../services/actions/auth';
 
 const checkResponse = (res) => {
   if (res.ok) {
@@ -11,37 +12,40 @@ const checkSuccess = (res) => {
   if (res && res.success) {
     return res;
   }
-  return Promise.reject(`Answer not success: ${res}`);
+  return Promise.reject(res);
 };
 
 export const request = (path, options) => {
   return fetch(`${API_URL}${path}`, options).then(checkResponse).then(checkSuccess);
 };
 
-export const requestPost = (path, options) => {
+export const requestPayload = (path, options) => {
   const defaultOptions = {
-    method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
   };
-  return request(path, { ...defaultOptions, ...options, body: JSON.stringify(options.body) });
+  defaultOptions.headers = { ...defaultOptions.headers, ...options.headers };
+  defaultOptions.method = options.method || 'POST';
+  return request(path, { ...defaultOptions, body: JSON.stringify(options.body) });
 };
 
-const refreshToken = async () => {};
-
-const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url, options) => {
   try {
-    const res = await fetch(url, options); //делаем запрос
-    return await checkResponse(res);
+    if (options.method === 'GET') {
+      return await request(url, options);
+    }
+    return await requestPayload(url, options);
   } catch (err) {
     if (err.message === 'jwt expired') {
-      const refreshData = await refreshToken(); //обновляем токен
+      const refreshData = await refreshToken();
       localStorage.setItem('refreshToken', refreshData.refreshToken);
-      localStorage.setItem('accessToken', refreshData.accessToken); //(или в cookies)
+      localStorage.setItem('accessToken', refreshData.accessToken);
       options.headers.authorization = refreshData.accessToken;
-      const res = await fetch(url, options); //вызываем перезапрос данных
-      return await checkResponse(res);
+      if (options.method === 'GET') {
+        return await request(url, options);
+      }
+      return await requestPayload(url, options);
     } else {
       return Promise.reject(err);
     }
