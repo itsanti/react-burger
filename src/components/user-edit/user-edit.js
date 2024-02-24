@@ -41,7 +41,7 @@ const UserEdit = () => {
   }, [values, user]);
 
   useEffect(() => {
-    if (!(values.name && values.email && values.password)) {
+    if (!(values.name && values.email)) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);
@@ -61,7 +61,11 @@ const UserEdit = () => {
       patch.password = values.password;
     }
     dispatch(editUser(patch)).then((res) => {
-      dispatch(setUser({ ...res.user, password: values.password }));
+      const patch = { ...res.user };
+      if (values.password) {
+        patch.password = values.password;
+      }
+      dispatch(setUser(patch));
       setIsNotEdit(true);
     });
   };

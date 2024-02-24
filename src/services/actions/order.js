@@ -1,4 +1,4 @@
-import { requestPayload } from '../../utils/http';
+import { fetchWithRefresh } from '../../utils/http';
 
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS';
@@ -18,7 +18,7 @@ export function getOrderDetails(orderPayload) {
     dispatch({
       type: POST_ORDER_REQUEST,
     });
-    requestPayload('/orders', orderPayload)
+    fetchWithRefresh('/orders', orderPayload)
       .then((res) => {
         dispatch({
           type: POST_ORDER_SUCCESS,
