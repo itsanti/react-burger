@@ -41,7 +41,7 @@ export const fetchWithRefresh = async (url, options) => {
       const refreshData = await refreshToken();
       localStorage.setItem('refreshToken', refreshData.refreshToken);
       localStorage.setItem('accessToken', refreshData.accessToken);
-      options.headers.authorization = refreshData.accessToken;
+      options.headers['Authorization'] = refreshData.accessToken;
       if (options.method === 'GET') {
         return await request(url, options);
       }
