@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './ingredient-details.module.css';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIngredient } from '../../services/actions/current-ingredient';
@@ -9,7 +9,7 @@ const IngredientDetails = () => {
   const { id } = useParams();
   const ingredients = useSelector(selectIngredients);
   const dispatch = useDispatch();
-
+  const location = useLocation();
   const ingredient = ingredients.filter((ingredient) => ingredient._id === id).at(0);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ const IngredientDetails = () => {
 
   return (
     <div className={styles.root}>
+      {!location.state && <h2 className="text_type_main-large mt-30">Детали ингредиента</h2>}
       <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
       <p className={styles.name}>{ingredient.name}</p>
       <ul className={styles.stat}>

@@ -2,17 +2,27 @@
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: 40px;
+  margin-top: 120px;
 }
 
 .navContainer {
+  width: 320px;
+}
+
+.nav {
+  composes: text text_type_main-medium from global;
   display: flex;
   flex-direction: column;
-  min-height: 344px;
-  margin-top: 80px;
+}
+
+.nav a {
+  margin: 17px 0;
 }
 
 .help {
-  margin-top: auto;
+  composes: text text_type_main-default text_color_inactive from global;
+  margin-top: 80px;
+  opacity: 0.4;
 }
 
 .link {

@@ -16,16 +16,24 @@ const Profile = () => {
   return (
     <div className={styles.root}>
       <div className={styles.navContainer}>
-        <NavLink to="/profile" className={isIndex ? styles.active : styles.link}>
-          Профиль
-        </NavLink>
-        <NavLink end to="orders" className={({ isActive }) => (isActive ? styles.active : styles.link)}>
-          История заказов
-        </NavLink>
-        <Link to={'/logout'} className={styles.link} onClick={onLogout}>
-          Выход
-        </Link>
-        {isIndex && <p className={styles.help}>В этом разделе вы можете изменить свои персональные данные</p>}
+        <nav className={styles.nav}>
+          <NavLink to="/profile" className={isIndex ? styles.active : styles.link}>
+            Профиль
+          </NavLink>
+          <NavLink end to="orders" className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+            История заказов
+          </NavLink>
+          <Link to={'/logout'} className={styles.link} onClick={onLogout}>
+            Выход
+          </Link>
+        </nav>
+        {isIndex && (
+          <p className={styles.help}>
+            В этом разделе вы можете
+            <br />
+            изменить свои персональные данные
+          </p>
+        )}
       </div>
       <Outlet />
     </div>
