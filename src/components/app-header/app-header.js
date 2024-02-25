@@ -1,40 +1,56 @@
 import React from 'react';
 import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../services/selectors/auth';
+import { ROUTES } from '../../utils/config';
 
 const AppHeader = () => {
+  const user = useSelector(selectUser);
+  const profileText = (user && user.name) || 'Личный кабинет';
   return (
     <div className={styles.root}>
       <header className={styles.header}>
         <nav>
           <ul className={styles.menu}>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <a href="/" className={styles.active}>
-                <div className="mr-2">
-                  <BurgerIcon type="primary" />
-                </div>
-                Конструктор
-              </a>
+              <NavLink to={ROUTES.index} className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+                {({ isActive }) => (
+                  <>
+                    <div className="mr-2">
+                      <BurgerIcon type={isActive ? 'primary' : 'secondary'} />
+                    </div>
+                    Конструктор
+                  </>
+                )}
+              </NavLink>
             </li>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <a href="/">
+              <NavLink to={ROUTES.index}>
                 <div className="mr-2">
                   <ListIcon type="secondary" />
                 </div>
                 Лента заказов
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>
-        <Logo />
+        <NavLink to={ROUTES.index}>
+          <Logo />
+        </NavLink>
         <ul className={styles.menu}>
           <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-            <a href="/">
-              <div className="mr-2">
-                <ProfileIcon type="secondary" />
-              </div>
-              Личный кабинет
-            </a>
+            <NavLink to={ROUTES.profile.root} className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+              {({ isActive }) => (
+                <>
+                  <div className="mr-2">
+                    <ProfileIcon type={isActive ? 'primary' : 'secondary'} />
+                  </div>
+                  {profileText}
+                </>
+              )}
+            </NavLink>
           </li>
         </ul>
       </header>

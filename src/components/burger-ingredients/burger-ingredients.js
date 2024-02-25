@@ -1,19 +1,18 @@
 import React, { useState, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import { SECTIONS } from '../../utils/config';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIngredients } from '../../services/selectors/ingredients';
-import { setIngredient } from '../../services/actions/current-ingredient';
-import { selectCurrentIngredient } from '../../services/selectors/current-ingredient';
 import BurgerIngredient from './burger-ingredient/burger-ingredient';
+import { setIngredient } from '../../services/actions/current-ingredient';
+import { Link, useLocation } from 'react-router-dom';
+import { ROUTES } from '../../utils/config';
 
 const BurgerIngredients = () => {
   const sections = [useRef(), useRef(), useRef()];
   const ingredients = useSelector(selectIngredients);
-  const currentIngredient = useSelector(selectCurrentIngredient);
+  let location = useLocation();
 
   const [activeTab, setActiveTab] = useState('bun');
 
@@ -21,10 +20,6 @@ const BurgerIngredients = () => {
 
   const setIngredientHandler = (ingredient) => {
     dispatch(setIngredient(ingredient));
-  };
-
-  const onModalClosed = () => {
-    dispatch(setIngredient(null));
   };
 
   const scrollToHandler = (sectionName) => {
@@ -68,21 +63,24 @@ const BurgerIngredients = () => {
                 .filter((item) => item.type === type[0])
                 .map((ingredient, index) => {
                   return (
-                    <BurgerIngredient
+                    <Link
                       key={index}
-                      current={index}
-                      ingredient={ingredient}
-                      setIngredientHandler={setIngredientHandler}
-                    />
+                      to={`${ROUTES.ingredients}/${ingredient._id}`}
+                      style={{ textDecoration: 'none', color: 'inherit' }}
+                      state={{ backgroundLocation: location }}
+                    >
+                      <BurgerIngredient
+                        current={index}
+                        ingredient={ingredient}
+                        setIngredientHandler={setIngredientHandler}
+                      />
+                    </Link>
                   );
                 })}
             </section>
           );
         })}
       </div>
-      <Modal title="Детали ингредиента" isOpen={currentIngredient} setIsModalOpened={onModalClosed}>
-        <IngredientDetails ingredient={currentIngredient} />
-      </Modal>
     </div>
   );
 };

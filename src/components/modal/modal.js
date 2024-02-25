@@ -5,7 +5,7 @@ import { ReactComponent as CloseIcon } from '../../images/close-icon.svg';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import PropTypes from 'prop-types';
 
-const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
+const Modal = ({ children, title, setIsModalOpened }) => {
   const escHandler = useCallback(
     (ev) => {
       if (ev.key === 'Escape') {
@@ -21,8 +21,6 @@ const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
       document.removeEventListener('keydown', escHandler, false);
     };
   }, [escHandler]);
-
-  if (!isOpen) return null;
 
   return createPortal(
     <>
@@ -44,7 +42,6 @@ const Modal = ({ children, title, isOpen, setIsModalOpened }) => {
 Modal.propTypes = {
   children: PropTypes.element.isRequired,
   title: PropTypes.string,
-  isOpen: PropTypes.object,
   setIsModalOpened: PropTypes.func.isRequired,
 };
 

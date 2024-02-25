@@ -6,16 +6,23 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
-import { selectCurrentOrder } from '../../services/selectors/order';
+import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
 import { delBun, delIngredientByUuid } from '../../services/actions/burgconstructor';
 import { useDrop } from 'react-dnd';
 import BurgerConstructorElement from './burger-constructor-element/burger-constructor-element';
+import { selectUser } from '../../services/selectors/auth';
+import { useNavigate } from 'react-router-dom';
+import Preloader from '../preloader/preloader';
+import { ROUTES } from '../../utils/config';
 
 const BurgerConstructor = () => {
   const constructorData = useSelector(selectBurgConstructorData);
   const totalPrice = useSelector(selectTotalPrice);
   const order = useSelector(selectCurrentOrder);
+  const orderIsLoading = useSelector(selectOrderIsLoading);
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
 
   const [, drop] = useDrop(
     () => ({
@@ -48,6 +55,13 @@ const BurgerConstructor = () => {
       constructorData.bun._id,
     ];
     dispatch(getOrderDetails({ body: { ingredients } }));
+  };
+
+  const makeOrder = (ev) => {
+    if (!user) {
+      return navigate(ROUTES.login);
+    }
+    onSetDetails(constructorData);
   };
 
   if (!constructorData.bun) {
@@ -98,18 +112,19 @@ const BurgerConstructor = () => {
           <span>{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          extraClass="ml-10"
-          onClick={() => onSetDetails(constructorData)}
-        >
+        <Button htmlType="button" type="primary" size="large" extraClass="ml-10" onClick={makeOrder}>
           Оформить заказ
         </Button>
-        <Modal isOpen={order} setIsModalOpened={onModalClosed}>
-          <OrderDetails order={order} />
-        </Modal>
+        {orderIsLoading && (
+          <Modal title="Заказ готовится" setIsModalOpened={() => false}>
+            <Preloader />
+          </Modal>
+        )}
+        {order && (
+          <Modal setIsModalOpened={onModalClosed}>
+            <OrderDetails order={order} />
+          </Modal>
+        )}
       </div>
     </div>
   );

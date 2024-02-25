@@ -1,4 +1,4 @@
-import { requestPost } from '../../utils/http';
+import { fetchWithRefresh } from '../../utils/http';
 
 export const POST_ORDER_REQUEST = 'POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS = 'POST_ORDER_SUCCESS';
@@ -14,11 +14,14 @@ export const setOrderDetails = (order) => {
 };
 
 export function getOrderDetails(orderPayload) {
+  const accessToken = localStorage.getItem('accessToken');
+  orderPayload.headers = { Authorization: accessToken };
+
   return function (dispatch) {
     dispatch({
       type: POST_ORDER_REQUEST,
     });
-    requestPost('/orders', orderPayload)
+    fetchWithRefresh('/orders', orderPayload)
       .then((res) => {
         dispatch({
           type: POST_ORDER_SUCCESS,

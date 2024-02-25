@@ -1,10 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './ingredient-details.module.css';
-import { ingredientPropTypes } from '../../utils/prop-types';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { selectIngredients } from '../../services/selectors/ingredients';
+import { useSelector, useDispatch } from 'react-redux';
+import { setIngredient } from '../../services/actions/current-ingredient';
+import { ROUTES } from '../../utils/config';
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = () => {
+  const { id } = useParams();
+  const ingredients = useSelector(selectIngredients);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const ingredient = ingredients.filter((ingredient) => ingredient._id === id).at(0);
+
+  useEffect(() => {
+    if (!ingredient) {
+      return navigate(ROUTES.noMatch);
+    }
+    dispatch(setIngredient(ingredient));
+  }, [ingredient, dispatch, navigate]);
+
+  if (!ingredient) {
+    return null;
+  }
+
   return (
     <div className={styles.root}>
+      {!location.state && <h2 className="text_type_main-large mt-30">Детали ингредиента</h2>}
       <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
       <p className={styles.name}>{ingredient.name}</p>
       <ul className={styles.stat}>
@@ -27,10 +50,6 @@ const IngredientDetails = ({ ingredient }) => {
       </ul>
     </div>
   );
-};
-
-IngredientDetails.propTypes = {
-  ingredient: ingredientPropTypes,
 };
 
 export default IngredientDetails;
