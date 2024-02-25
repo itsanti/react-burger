@@ -4,7 +4,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIngredient } from '../../services/actions/current-ingredient';
-import { ROUTES } from '../../utils/config';
+import { NoMatch } from '../../pages';
 
 const IngredientDetails = () => {
   const { id } = useParams();
@@ -16,13 +16,13 @@ const IngredientDetails = () => {
 
   useEffect(() => {
     if (!ingredient) {
-      return navigate(ROUTES.noMatch);
+      return;
     }
     dispatch(setIngredient(ingredient));
   }, [ingredient, dispatch, navigate]);
 
   if (!ingredient) {
-    return null;
+    return <NoMatch />;
   }
 
   return (
