@@ -106,7 +106,7 @@ const UserEdit = () => {
           placeholder={'Пароль'}
           onChange={handleChange}
           icon={!isNotEdit ? (isPasswordVisible ? 'HideIcon' : 'ShowIcon') : 'EditIcon'}
-          value={values.password}
+          value={values.password || ''}
           name={'password'}
           error={false}
           onIconClick={(ev) => onIconClick(ev, 'password')}
