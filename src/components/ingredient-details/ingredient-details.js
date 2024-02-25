@@ -1,23 +1,25 @@
 import React, { useEffect } from 'react';
 import styles from './ingredient-details.module.css';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIngredient } from '../../services/actions/current-ingredient';
+import { ROUTES } from '../../utils/config';
 
 const IngredientDetails = () => {
   const { id } = useParams();
   const ingredients = useSelector(selectIngredients);
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const ingredient = ingredients.filter((ingredient) => ingredient._id === id).at(0);
 
   useEffect(() => {
     if (!ingredient) {
-      return;
+      return navigate(ROUTES.noMatch);
     }
     dispatch(setIngredient(ingredient));
-  }, [id, ingredient, dispatch]);
+  }, [ingredient, dispatch, navigate]);
 
   if (!ingredient) {
     return null;

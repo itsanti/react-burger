@@ -29,7 +29,7 @@ const ResetPassword = () => {
     if (location.state?.from !== ROUTES.forgotPassword) {
       return navigate(ROUTES.forgotPassword);
     }
-  }, []);
+  });
 
   useEffect(() => {
     if (!(values.password && values.token)) {

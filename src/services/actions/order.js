@@ -14,6 +14,9 @@ export const setOrderDetails = (order) => {
 };
 
 export function getOrderDetails(orderPayload) {
+  const accessToken = localStorage.getItem('accessToken');
+  orderPayload.headers = { Authorization: accessToken };
+
   return function (dispatch) {
     dispatch({
       type: POST_ORDER_REQUEST,

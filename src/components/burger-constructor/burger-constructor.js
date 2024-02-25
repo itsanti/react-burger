@@ -54,9 +54,7 @@ const BurgerConstructor = () => {
       ...constructorData.ingredients.map((ingredient) => ingredient._id),
       constructorData.bun._id,
     ];
-    const accessToken = localStorage.getItem('accessToken');
-    const headers = { Authorization: accessToken };
-    dispatch(getOrderDetails({ body: { ingredients }, headers }));
+    dispatch(getOrderDetails({ body: { ingredients } }));
   };
 
   const makeOrder = (ev) => {
