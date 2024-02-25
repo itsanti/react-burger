@@ -21,5 +21,3 @@ export const ROUTES = {
     orders: '/profile/orders',
   },
 };
-
-console.log(ROUTES);
