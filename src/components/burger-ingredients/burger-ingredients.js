@@ -7,6 +7,7 @@ import { selectIngredients } from '../../services/selectors/ingredients';
 import BurgerIngredient from './burger-ingredient/burger-ingredient';
 import { setIngredient } from '../../services/actions/current-ingredient';
 import { Link, useLocation } from 'react-router-dom';
+import { ROUTES } from '../../utils/config';
 
 const BurgerIngredients = () => {
   const sections = [useRef(), useRef(), useRef()];
@@ -64,7 +65,7 @@ const BurgerIngredients = () => {
                   return (
                     <Link
                       key={index}
-                      to={`/ingredients/${ingredient._id}`}
+                      to={`${ROUTES.ingredients}/${ingredient._id}`}
                       style={{ textDecoration: 'none', color: 'inherit' }}
                       state={{ backgroundLocation: location }}
                     >

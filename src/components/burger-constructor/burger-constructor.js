@@ -14,6 +14,7 @@ import BurgerConstructorElement from './burger-constructor-element/burger-constr
 import { selectUser } from '../../services/selectors/auth';
 import { useNavigate } from 'react-router-dom';
 import Preloader from '../preloader/preloader';
+import { ROUTES } from '../../utils/config';
 
 const BurgerConstructor = () => {
   const constructorData = useSelector(selectBurgConstructorData);
@@ -60,7 +61,7 @@ const BurgerConstructor = () => {
 
   const makeOrder = (ev) => {
     if (!user) {
-      return navigate('/login');
+      return navigate(ROUTES.login);
     }
     onSetDetails(constructorData);
   };

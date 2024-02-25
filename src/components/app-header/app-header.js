@@ -4,6 +4,7 @@ import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-dev
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../services/selectors/auth';
+import { ROUTES } from '../../utils/config';
 
 const AppHeader = () => {
   const user = useSelector(selectUser);
@@ -14,7 +15,7 @@ const AppHeader = () => {
         <nav>
           <ul className={styles.menu}>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <NavLink to="/" className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+              <NavLink to={ROUTES.index} className={({ isActive }) => (isActive ? styles.active : styles.link)}>
                 {({ isActive }) => (
                   <>
                     <div className="mr-2">
@@ -26,7 +27,7 @@ const AppHeader = () => {
               </NavLink>
             </li>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <NavLink to="/">
+              <NavLink to={ROUTES.index}>
                 <div className="mr-2">
                   <ListIcon type="secondary" />
                 </div>
@@ -35,12 +36,12 @@ const AppHeader = () => {
             </li>
           </ul>
         </nav>
-        <NavLink to="/">
+        <NavLink to={ROUTES.index}>
           <Logo />
         </NavLink>
         <ul className={styles.menu}>
           <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-            <NavLink to="/profile" className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+            <NavLink to={ROUTES.profile.root} className={({ isActive }) => (isActive ? styles.active : styles.link)}>
               {({ isActive }) => (
                 <>
                   <div className="mr-2">

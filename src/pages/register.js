@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from './register.module.css';
 import { useDispatch } from 'react-redux';
 import { authRegister, setUser } from '../services/actions/auth';
+import { ROUTES } from '../utils/config';
 
 const Register = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -95,7 +96,7 @@ const Register = () => {
           </Button>
           <p>
             Уже зарегистрированы?{' '}
-            <Link to="/login" className={styles.accent}>
+            <Link to={ROUTES.login} className={styles.accent}>
               Войти
             </Link>
           </p>

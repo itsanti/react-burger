@@ -13,6 +13,7 @@ import { OnlyAuth, OnlyUnAuth } from '../protected-route/protected-route';
 import { checkUserAuth } from '../../services/actions/auth';
 import OrdersHistory from '../orders-history/orders-history';
 import UserEdit from '../user-edit/user-edit';
+import { ROUTES } from '../../utils/config';
 
 function App() {
   const isLoading = useSelector(selectIngredientsLoading);
@@ -40,22 +41,22 @@ function App() {
         {!isError && !isLoading ? (
           <>
             <Routes location={state?.backgroundLocation || location}>
-              <Route path="/" element={<Home />} />
-              <Route path="/ingredients/:id" element={<IngredientDetails />} />
-              <Route path="/login" element={<OnlyUnAuth component={<Login />} />} />
-              <Route path="/register" element={<OnlyUnAuth component={<Register />} />} />
-              <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPassword />} />} />
-              <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPassword />} />} />
-              <Route path="/profile" element={<OnlyAuth component={<Profile />} />}>
+              <Route index element={<Home />} />
+              <Route path={ROUTES.ingredientsById} element={<IngredientDetails />} />
+              <Route path={ROUTES.login} element={<OnlyUnAuth component={<Login />} />} />
+              <Route path={ROUTES.register} element={<OnlyUnAuth component={<Register />} />} />
+              <Route path={ROUTES.forgotPassword} element={<OnlyUnAuth component={<ForgotPassword />} />} />
+              <Route path={ROUTES.resetPassword} element={<OnlyUnAuth component={<ResetPassword />} />} />
+              <Route path={ROUTES.profile.root} element={<OnlyAuth component={<Profile />} />}>
                 <Route index element={<UserEdit />} />
-                <Route path="orders" element={<OrdersHistory />} />
+                <Route path={ROUTES.profile.orders} element={<OrdersHistory />} />
               </Route>
-              <Route path="*" element={<NoMatch />} />
+              <Route path={ROUTES.noMatch} element={<NoMatch />} />
             </Routes>
             {state?.backgroundLocation && (
               <Routes>
                 <Route
-                  path="/ingredients/:id"
+                  path={ROUTES.ingredientsById}
                   element={
                     <Modal title="Детали ингредиента" setIsModalOpened={onModalClosed}>
                       <IngredientDetails />

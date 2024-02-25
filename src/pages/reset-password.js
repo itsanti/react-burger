@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { resetPassword } from '../services/actions/auth';
+import { ROUTES } from '../utils/config';
 
 const ResetPassword = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -25,8 +26,8 @@ const ResetPassword = () => {
   };
 
   useEffect(() => {
-    if (location.state?.from !== '/forgot-password') {
-      return navigate('/forgot-password');
+    if (location.state?.from !== ROUTES.forgotPassword) {
+      return navigate(ROUTES.forgotPassword);
     }
   }, []);
 
@@ -42,7 +43,7 @@ const ResetPassword = () => {
     ev.preventDefault();
     dispatch(resetPassword(values))
       .then((res) => {
-        navigate('/login', { replace: true });
+        navigate(ROUTES.login, { replace: true });
       })
       .catch((err) => {
         setError({
@@ -85,7 +86,7 @@ const ResetPassword = () => {
           </Button>
           <p>
             Вспомнили пароль?{' '}
-            <Link to={'/login'} className={styles.accent}>
+            <Link to={ROUTES.login} className={styles.accent}>
               Войти
             </Link>
           </p>

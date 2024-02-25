@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, useLocation } from 'react-router-dom';
 import { selectIsAuthChecked, selectUser } from '../../services/selectors/auth';
 import PropTypes from 'prop-types';
+import { ROUTES } from '../../utils/config';
 
 const Protected = ({ onlyUnAuth = false, component }) => {
   // нужно делать checkUserAuth в <App/>
@@ -15,12 +16,12 @@ const Protected = ({ onlyUnAuth = false, component }) => {
   }
 
   if (onlyUnAuth && user) {
-    const { from } = location.state || { from: { pathname: '/' } };
+    const { from } = location.state || { from: { pathname: ROUTES.index } };
     return <Navigate to={from} />;
   }
 
   if (!onlyUnAuth && !user) {
-    return <Navigate to="/login" state={{ from: location }} />;
+    return <Navigate to={ROUTES.login} state={{ from: location }} />;
   }
 
   return component;

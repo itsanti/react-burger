@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { authLogin, setUser } from '../services/actions/auth';
+import { ROUTES } from '../utils/config';
 
 const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -80,13 +81,13 @@ const Login = () => {
           </Button>
           <p>
             Вы — новый пользователь?{' '}
-            <Link to={'/register'} className={styles.accent}>
+            <Link to={ROUTES.register} className={styles.accent}>
               Зарегистрироваться
             </Link>
           </p>
           <p>
             Забыли пароль?{' '}
-            <Link to={'/forgot-password'} className={styles.accent}>
+            <Link to={ROUTES.forgotPassword} className={styles.accent}>
               Восстановить пароль
             </Link>
           </p>

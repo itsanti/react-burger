@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './forgot-password.module.css';
 import { useDispatch } from 'react-redux';
 import { forgotPassword } from '../services/actions/auth';
+import { ROUTES } from '../utils/config';
 
 const ForgotPassword = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -26,7 +27,7 @@ const ForgotPassword = () => {
   const handleSubmit = (ev) => {
     ev.preventDefault();
     dispatch(forgotPassword(values.email)).then((res) => {
-      navigate('/reset-password', { replace: true, state: { from: '/forgot-password' } });
+      navigate(ROUTES.resetPassword, { replace: true, state: { from: ROUTES.forgotPassword } });
     });
   };
 
@@ -50,7 +51,7 @@ const ForgotPassword = () => {
           </Button>
           <p>
             Вспомнили пароль?{' '}
-            <Link to={'/login'} className={styles.accent}>
+            <Link to={ROUTES.login} className={styles.accent}>
               Войти
             </Link>
           </p>

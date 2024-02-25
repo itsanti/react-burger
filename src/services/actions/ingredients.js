@@ -1,3 +1,4 @@
+import { ROUTES } from '../../utils/config';
 import { request } from '../../utils/http';
 
 export const GET_INGREDIENTS_REQUEST = 'GET_ITEMS_REQUEST';
@@ -9,7 +10,7 @@ export function getIngredients() {
     dispatch({
       type: GET_INGREDIENTS_REQUEST,
     });
-    request('/ingredients')
+    request(ROUTES.ingredients)
       .then((res) => {
         dispatch({
           type: GET_INGREDIENTS_SUCCESS,
