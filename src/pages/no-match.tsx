@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../utils/config';
 import styles from './no-match.module.css';
 
-function NoMatch() {
+const NoMatch: FC = () => {
   return (
     <div className={styles.root}>
       <h2 className={styles.title}>Oops nothing to see here!</h2>

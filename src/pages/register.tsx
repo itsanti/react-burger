@@ -1,45 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { useForm } from '../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import styles from './login.module.css';
+import styles from './register.module.css';
 import { useDispatch } from 'react-redux';
-import { authLogin, setUser } from '../services/actions/auth';
+import { authRegister, setUser } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
-const Login = () => {
+const Register: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [error, setError] = useState({ isSet: false, msg: '' });
+  const [, setError] = useState({ isSet: false, msg: '' });
   const dispatch = useDispatch();
 
-  const { values, handleChange } = useForm({
-    email: '',
-    password: '',
-  });
+  const initialFormState = useMemo(
+    () => ({
+      name: '',
+      email: '',
+      password: '',
+    }),
+    [],
+  );
 
-  const handleChangeWithError = (ev) => {
+  const { values, handleChange } = useForm(initialFormState);
+
+  const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setError({ isSet: false, msg: '' });
     handleChange(ev);
   };
 
   useEffect(() => {
-    if (!(values.email && values.password)) {
+    if (!(values.email && values.password && values.name)) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);
     }
   }, [values]);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(authLogin(values))
-      .then((res) => {
+    dispatch(authRegister(values) as any)
+      .then((res: any) => {
         dispatch(setUser({ ...res.user, password: values.password }));
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setError({
           isSet: true,
           msg: err.message,
@@ -49,46 +55,46 @@ const Login = () => {
 
   return (
     <div className={styles.root}>
-      <h2 className={styles.title}>Вход</h2>
+      <h2 className={styles.title}>Регистрация</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <Input
+          type={'text'}
+          placeholder={'Имя'}
+          onChange={handleChange}
+          value={values.name}
+          name={'name'}
+          error={false}
+          size={'default'}
+          extraClass="mt-6"
+        />
         <EmailInput
-          type={'email'}
           placeholder={'E-mail'}
           onChange={handleChangeWithError}
           value={values.email}
           name={'email'}
-          error={error.isSet}
-          errorText={error.msg}
           size={'default'}
           extraClass="mt-6"
         />
         <Input
           type={isPasswordVisible ? 'text' : 'password'}
           placeholder={'Пароль'}
-          onChange={handleChangeWithError}
+          onChange={handleChange}
           icon={isPasswordVisible ? 'HideIcon' : 'ShowIcon'}
           value={values.password}
           name={'password'}
-          error={error.isSet}
-          errorText={error.msg}
+          error={false}
           onIconClick={() => setIsPasswordVisible(!isPasswordVisible)}
           size={'default'}
           extraClass="mt-6"
         />
         <div className={styles.formFooter}>
-          <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6 mb-20" disabled={isButtonDisabled}>
-            Войти
+          <Button disabled={isButtonDisabled} htmlType="submit" type="primary" size="medium" extraClass="mt-6 mb-20">
+            Зарегистрироваться
           </Button>
           <p>
-            Вы — новый пользователь?{' '}
-            <Link to={ROUTES.register} className={styles.accent}>
-              Зарегистрироваться
-            </Link>
-          </p>
-          <p>
-            Забыли пароль?{' '}
-            <Link to={ROUTES.forgotPassword} className={styles.accent}>
-              Восстановить пароль
+            Уже зарегистрированы?{' '}
+            <Link to={ROUTES.login} className={styles.accent}>
+              Войти
             </Link>
           </p>
         </div>
@@ -97,4 +103,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

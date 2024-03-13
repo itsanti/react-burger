@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './profile.module.css';
 
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
@@ -6,13 +6,13 @@ import { useDispatch } from 'react-redux';
 import { authLogout } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
-const Profile = () => {
+const Profile: FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const onLogout = (ev) => {
+  const onLogout = (ev: React.MouseEvent<HTMLElement>) => {
     ev.preventDefault();
-    dispatch(authLogout());
+    dispatch(authLogout() as any);
   };
 
   const isIndex = location.pathname === ROUTES.profile.root;

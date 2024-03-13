@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { resetPassword } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [error, setError] = useState({ isSet: false, msg: '' });
@@ -20,7 +20,7 @@ const ResetPassword = () => {
     token: '',
   });
 
-  const handleChangeWithError = (ev) => {
+  const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setError({ isSet: false, msg: '' });
     handleChange(ev);
   };
@@ -39,13 +39,13 @@ const ResetPassword = () => {
     }
   }, [values]);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(resetPassword(values))
-      .then((res) => {
+    dispatch(resetPassword(values) as any)
+      .then((res: any) => {
         navigate(ROUTES.login, { replace: true });
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setError({
           isSet: true,
           msg: err.message,

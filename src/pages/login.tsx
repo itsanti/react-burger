@@ -1,51 +1,45 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
-import styles from './register.module.css';
+import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
-import { authRegister, setUser } from '../services/actions/auth';
+import { authLogin, setUser } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
-const Register = () => {
+const Login: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [error, setError] = useState({ isSet: false, msg: '' });
   const dispatch = useDispatch();
 
-  const initialFormState = useMemo(
-    () => ({
-      name: '',
-      email: '',
-      password: '',
-    }),
-    [],
-  );
+  const { values, handleChange } = useForm({
+    email: '',
+    password: '',
+  });
 
-  const { values, handleChange } = useForm(initialFormState);
-
-  const handleChangeWithError = (ev) => {
+  const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setError({ isSet: false, msg: '' });
     handleChange(ev);
   };
 
   useEffect(() => {
-    if (!(values.email && values.password && values.name)) {
+    if (!(values.email && values.password)) {
       setIsButtonDisabled(true);
     } else {
       setIsButtonDisabled(false);
     }
   }, [values]);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(authRegister(values))
-      .then((res) => {
+    dispatch(authLogin(values) as any)
+      .then((res: any) => {
         dispatch(setUser({ ...res.user, password: values.password }));
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setError({
           isSet: true,
           msg: err.message,
@@ -55,49 +49,43 @@ const Register = () => {
 
   return (
     <div className={styles.root}>
-      <h2 className={styles.title}>Регистрация</h2>
+      <h2 className={styles.title}>Вход</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <Input
-          type={'text'}
-          placeholder={'Имя'}
-          onChange={handleChange}
-          value={values.name}
-          name={'name'}
-          error={false}
-          size={'default'}
-          extraClass="mt-6"
-        />
         <EmailInput
-          type={'email'}
           placeholder={'E-mail'}
           onChange={handleChangeWithError}
           value={values.email}
           name={'email'}
-          error={error.isSet}
-          errorText={error.msg}
           size={'default'}
           extraClass="mt-6"
         />
         <Input
           type={isPasswordVisible ? 'text' : 'password'}
           placeholder={'Пароль'}
-          onChange={handleChange}
+          onChange={handleChangeWithError}
           icon={isPasswordVisible ? 'HideIcon' : 'ShowIcon'}
           value={values.password}
           name={'password'}
-          error={false}
+          error={error.isSet}
+          errorText={error.msg}
           onIconClick={() => setIsPasswordVisible(!isPasswordVisible)}
           size={'default'}
           extraClass="mt-6"
         />
         <div className={styles.formFooter}>
-          <Button disabled={isButtonDisabled} htmlType="submit" type="primary" size="medium" extraClass="mt-6 mb-20">
-            Зарегистрироваться
+          <Button htmlType="submit" type="primary" size="medium" extraClass="mt-6 mb-20" disabled={isButtonDisabled}>
+            Войти
           </Button>
           <p>
-            Уже зарегистрированы?{' '}
-            <Link to={ROUTES.login} className={styles.accent}>
-              Войти
+            Вы — новый пользователь?{' '}
+            <Link to={ROUTES.register} className={styles.accent}>
+              Зарегистрироваться
+            </Link>
+          </p>
+          <p>
+            Забыли пароль?{' '}
+            <Link to={ROUTES.forgotPassword} className={styles.accent}>
+              Восстановить пароль
             </Link>
           </p>
         </div>
@@ -106,4 +94,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
