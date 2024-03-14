@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredient.module.css';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { dropIngredient } from '../../../services/actions/burgconstructor';
 import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
-import { ingredientPropTypes } from '../../../utils/prop-types';
 import { setIngredient } from '../../../services/actions/current-ingredient';
+import { BurgerIngredientProps, IngredientProps } from '../../../utils/types/prop-types';
 
-const BurgerIngredient = ({ ingredient }) => {
+
+const BurgerIngredient: FC<BurgerIngredientProps> = ({ ingredient }) => {
   const dispatch = useDispatch();
-  const countersMap = useSelector(selectIngredientsCount);
+  const countersMap: any = useSelector(selectIngredientsCount);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'ingredient',
@@ -26,7 +27,7 @@ const BurgerIngredient = ({ ingredient }) => {
     }),
   }));
 
-  const setIngredientHandler = (ingredient) => {
+  const setIngredientHandler = (ingredient: IngredientProps) => {
     dispatch(setIngredient(ingredient));
   };
 
@@ -43,10 +44,6 @@ const BurgerIngredient = ({ ingredient }) => {
       <p className={styles.name}>{ingredient.name}</p>
     </div>
   );
-};
-
-BurgerIngredient.propTypes = {
-  ingredient: ingredientPropTypes.isRequired,
 };
 
 export default BurgerIngredient;

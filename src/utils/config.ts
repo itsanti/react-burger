@@ -1,9 +1,11 @@
+import { Sections } from './types/prop-types';
+
 export const API_URL: string = 'https://norma.nomoreparties.space/api';
 
-export const SECTIONS: [string, string][] = [
-  ['bun', 'Булки'],
-  ['sauce', 'Соусы'],
-  ['main', 'Начинки'],
+export const SECTIONS: [Sections, string][] = [
+  [Sections.bun, 'Булки'],
+  [Sections.sauce, 'Соусы'],
+  [Sections.main, 'Начинки'],
 ];
 
 interface AppRoutes {

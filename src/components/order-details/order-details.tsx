@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './order-details.module.css';
 import done from '../../images/done.png';
-import { orderDetailsPropTypes } from '../../utils/prop-types';
+import { OrderProps } from '../../utils/types/prop-types';
 
-const OrderDetails = ({ order }) => {
+
+const OrderDetails: FC<OrderProps> = ({ order }) => {
   return (
     <div className={styles.root}>
       <p className={styles.orderSum}>{order.number}</p>
@@ -13,10 +14,6 @@ const OrderDetails = ({ order }) => {
       <p className={styles.orderStatusDescription}>Дождитесь готовности на орбитальной станции</p>
     </div>
   );
-};
-
-OrderDetails.propTypes = {
-  order: orderDetailsPropTypes,
 };
 
 export default OrderDetails;

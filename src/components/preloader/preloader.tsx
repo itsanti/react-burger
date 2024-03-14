@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './preloader.module.css';
 
-const Preloader = () => {
+const Preloader: FC = () => {
   return (
     <div className={styles.root}>
       <div className={styles['lds-spinner']}>

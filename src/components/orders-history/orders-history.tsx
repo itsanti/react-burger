@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-const OrdersHistory = () => {
+const OrdersHistory: FC = () => {
   return (
     <p>
       Здесь будет история заказов по адресу <code>/profile/orders/:number</code>

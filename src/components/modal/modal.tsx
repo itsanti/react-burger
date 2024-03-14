@@ -1,14 +1,14 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { FC, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './modal.module.css';
 import { ReactComponent as CloseIcon } from '../../images/close-icon.svg';
 import ModalOverlay from '../modal-overlay/modal-overlay';
-import PropTypes from 'prop-types';
+import { ModalProps } from '../../utils/types/prop-types';
 
-const Modal = ({ children, title, setIsModalOpened }) => {
-  const escHandler = useCallback(
-    (ev) => {
-      if (ev.key === 'Escape') {
+const Modal: FC<ModalProps> = ({ children, title, setIsModalOpened }) => {
+  const escHandler = useCallback<EventListener>(
+    (ev: Event | KeyboardEvent) => {
+      if ('key' in ev && ev.key === 'Escape') {
         setIsModalOpened(false);
       }
     },
@@ -35,14 +35,8 @@ const Modal = ({ children, title, setIsModalOpened }) => {
       </div>
       <ModalOverlay onModalClosed={setIsModalOpened} />
     </>,
-    document.querySelector('#modal-overlay'),
+    document.querySelector('#modal-overlay') as Element,
   );
-};
-
-Modal.propTypes = {
-  children: PropTypes.element.isRequired,
-  title: PropTypes.string,
-  setIsModalOpened: PropTypes.func.isRequired,
 };
 
 export default Modal;
