@@ -6,6 +6,7 @@ import styles from './login.module.css';
 import { useDispatch } from 'react-redux';
 import { authLogin, setUser } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
+import { LoginPayload } from '../services/actions/auth';
 
 const Login: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -13,7 +14,7 @@ const Login: FC = () => {
   const [error, setError] = useState({ isSet: false, msg: '' });
   const dispatch = useDispatch();
 
-  const { values, handleChange } = useForm({
+  const { values, handleChange } = useForm<LoginPayload>({
     email: '',
     password: '',
   });

@@ -5,7 +5,7 @@ import styles from './user-edit.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../services/selectors/auth';
 import { editUser, setUser } from '../../services/actions/auth';
-import { ProfileForm } from '../../utils/types/prop-types';
+import { EditPayload } from '../../services/actions/auth';
 
 const UserEdit: FC = () => {
   const [isNotEdit, setIsNotEdit] = useState(true);
@@ -51,7 +51,7 @@ const UserEdit: FC = () => {
 
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    const patch: ProfileForm = { name: '', email: '', password: '' };
+    const patch: EditPayload = {};
     if (values.name !== user.name) {
       patch.name = values.name;
     }
@@ -68,6 +68,8 @@ const UserEdit: FC = () => {
       }
       dispatch(setUser(patch));
       setIsNotEdit(true);
+    }).catch((err: any) => {
+      console.log(err.message);
     });
   };
 

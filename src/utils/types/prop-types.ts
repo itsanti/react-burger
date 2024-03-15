@@ -6,12 +6,6 @@ export enum Sections {
   sauce = 'sauce',
 }
 
-export type ProfileForm = {
-  name: string;
-  email: string;
-  password: string;
-};
-
 export type BurgerIngredientProps = {
   ingredient: IngredientProps;
 };
