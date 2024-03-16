@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import './app.css';
+import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
@@ -37,7 +37,7 @@ const App: FC = () => {
   return (
     <>
       <AppHeader />
-      <main className="container">
+      <main className={styles.container}>
         {!isError && !isLoading ? (
           <>
             <Routes location={state?.backgroundLocation || location}>

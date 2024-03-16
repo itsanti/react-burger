@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
 import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
-import { delBun, delIngredientByUuid } from '../../services/actions/burgconstructor';
+import { delBun, delIngredientByUuid, clearConstructor } from '../../services/actions/burgconstructor';
 import { useDrop } from 'react-dnd';
 import BurgerConstructorElement from './burger-constructor-element/burger-constructor-element';
 import { selectUser } from '../../services/selectors/auth';
@@ -47,6 +47,7 @@ const BurgerConstructor: FC = () => {
 
   const onModalClosed = () => {
     dispatch(setOrderDetails(null));
+    dispatch(clearConstructor());
   };
 
   const onSetDetails = (constructorData: any) => {
