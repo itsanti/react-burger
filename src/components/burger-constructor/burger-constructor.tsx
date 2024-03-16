@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,15 +8,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
 import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
-import { delBun, delIngredientByUuid } from '../../services/actions/burgconstructor';
+import { delBun, delIngredientByUuid, clearConstructor } from '../../services/actions/burgconstructor';
 import { useDrop } from 'react-dnd';
 import BurgerConstructorElement from './burger-constructor-element/burger-constructor-element';
 import { selectUser } from '../../services/selectors/auth';
 import { useNavigate } from 'react-router-dom';
 import Preloader from '../preloader/preloader';
 import { ROUTES } from '../../utils/config';
+import { IngredientItemPick } from '../../utils/types/prop-types';
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
   const constructorData = useSelector(selectBurgConstructorData);
   const totalPrice = useSelector(selectTotalPrice);
   const order = useSelector(selectCurrentOrder);
@@ -27,7 +28,7 @@ const BurgerConstructor = () => {
   const [, drop] = useDrop(
     () => ({
       accept: 'ingredient',
-      canDrop: (item) => {
+      canDrop: (item: IngredientItemPick) => {
         return constructorData?.bun || item.type === 'bun';
       },
     }),
@@ -36,7 +37,7 @@ const BurgerConstructor = () => {
 
   const dispatch = useDispatch();
 
-  const handleClose = (type, uuid) => {
+  const handleClose = (type: string, uuid?: string) => {
     if (type === 'bun') {
       dispatch(delBun());
     } else {
@@ -46,18 +47,19 @@ const BurgerConstructor = () => {
 
   const onModalClosed = () => {
     dispatch(setOrderDetails(null));
+    dispatch(clearConstructor());
   };
 
-  const onSetDetails = (constructorData) => {
+  const onSetDetails = (constructorData: any) => {
     const ingredients = [
       constructorData.bun._id,
-      ...constructorData.ingredients.map((ingredient) => ingredient._id),
+      ...constructorData.ingredients.map((ingredient: any) => ingredient._id),
       constructorData.bun._id,
     ];
-    dispatch(getOrderDetails({ body: { ingredients } }));
+    dispatch(getOrderDetails({ body: { ingredients } }) as any);
   };
 
-  const makeOrder = (ev) => {
+  const makeOrder = () => {
     if (!user) {
       return navigate(ROUTES.login);
     }
@@ -86,12 +88,11 @@ const BurgerConstructor = () => {
         }}
       />
       <div className={`${styles.container} ${constructorData.ingredients.length ? '' : styles.containerEmpty}`}>
-        {constructorData.ingredients.map((element, index) => (
+        {constructorData.ingredients.map((ingredient: any, index: number) => (
           <BurgerConstructorElement
-            key={element.uuid}
+            key={ingredient.uuid}
             index={index}
-            element={element}
-            styles={styles}
+            element={ingredient}
             handleClose={handleClose}
           />
         ))}

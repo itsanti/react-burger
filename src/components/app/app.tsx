@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import './app.css';
+import React, { FC, useEffect } from 'react';
+import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../services/actions/ingredients';
@@ -15,7 +15,7 @@ import OrdersHistory from '../orders-history/orders-history';
 import UserEdit from '../user-edit/user-edit';
 import { ROUTES } from '../../utils/config';
 
-function App() {
+const App: FC = () => {
   const isLoading = useSelector(selectIngredientsLoading);
   const isError = useSelector(selectIngredientsError);
   const dispatch = useDispatch();
@@ -30,14 +30,14 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(getIngredients());
-    dispatch(checkUserAuth());
+    dispatch(getIngredients() as any);
+    dispatch(checkUserAuth() as any);
   }, [dispatch]);
 
   return (
     <>
       <AppHeader />
-      <main className="container">
+      <main className={styles.container}>
         {!isError && !isLoading ? (
           <>
             <Routes location={state?.backgroundLocation || location}>

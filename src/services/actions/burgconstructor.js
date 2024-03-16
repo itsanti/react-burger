@@ -1,9 +1,16 @@
 import { UUID4 } from '../../utils/utils';
 
+export const CLEAR_CONSTRUCTOR = 'CLEAR_CONSTRUCTOR';
 export const DROP_INGREDIENT = 'DROP_INGREDIENT';
 export const DEL_INGREDIENT = 'DEL_INGREDIENT';
 export const DEL_BUN = 'DEL_BUN';
 export const SORT_INGREDIENTS = 'SORT_INGREDIENTS';
+
+export const clearConstructor = () => {
+  return {
+    type: CLEAR_CONSTRUCTOR,
+  };
+};
 
 export const sortIngredients = (dragIndex, hoverIndex) => {
   return {

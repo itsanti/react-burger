@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { FC, useEffect } from 'react';
 import styles from './ingredient-details.module.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIngredient } from '../../services/actions/current-ingredient';
 import { NoMatch } from '../../pages';
+import { IngredientProps } from '../../utils/types/prop-types';
 
-const IngredientDetails = () => {
+const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const ingredients = useSelector(selectIngredients);
+  const ingredients: IngredientProps[] = useSelector(selectIngredients);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();

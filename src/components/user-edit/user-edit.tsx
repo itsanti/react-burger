@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
-import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './user-edit.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../../services/selectors/auth';
 import { editUser, setUser } from '../../services/actions/auth';
+import { EditPayload } from '../../services/actions/auth';
 
-const UserEdit = () => {
+const UserEdit: FC = () => {
   const [isNotEdit, setIsNotEdit] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -21,7 +22,7 @@ const UserEdit = () => {
     setIsNotEdit(true);
   };
 
-  const onIconClick = (ev, name) => {
+  const onIconClick = (ev: React.MouseEvent<HTMLElement>, name?: string) => {
     if (!isNotEdit && name === 'password') {
       setIsPasswordVisible(!isPasswordVisible);
     } else {
@@ -48,9 +49,9 @@ const UserEdit = () => {
     }
   }, [values]);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    const patch = {};
+    const patch: EditPayload = {};
     if (values.name !== user.name) {
       patch.name = values.name;
     }
@@ -60,13 +61,15 @@ const UserEdit = () => {
     if (values.password !== user.password) {
       patch.password = values.password;
     }
-    dispatch(editUser(patch)).then((res) => {
+    dispatch(editUser(patch) as any).then((res: any) => {
       const patch = { ...res.user };
       if (values.password) {
         patch.password = values.password;
       }
       dispatch(setUser(patch));
       setIsNotEdit(true);
+    }).catch((err: any) => {
+      console.log(err.message);
     });
   };
 
@@ -87,8 +90,7 @@ const UserEdit = () => {
           readOnly={isNotEdit}
           disabled={isNotEdit}
         />
-        <EmailInput
-          type={'email'}
+        <Input
           placeholder={'E-mail'}
           onChange={handleChange}
           value={values.email}

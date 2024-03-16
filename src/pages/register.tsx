@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { FC, useState, useEffect, useMemo } from 'react';
 import { useForm } from '../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
@@ -7,10 +7,10 @@ import { useDispatch } from 'react-redux';
 import { authRegister, setUser } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
-const Register = () => {
+const Register: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [error, setError] = useState({ isSet: false, msg: '' });
+  const [, setError] = useState({ isSet: false, msg: '' });
   const dispatch = useDispatch();
 
   const initialFormState = useMemo(
@@ -24,7 +24,7 @@ const Register = () => {
 
   const { values, handleChange } = useForm(initialFormState);
 
-  const handleChangeWithError = (ev) => {
+  const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setError({ isSet: false, msg: '' });
     handleChange(ev);
   };
@@ -37,15 +37,15 @@ const Register = () => {
     }
   }, [values]);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(authRegister(values))
-      .then((res) => {
+    dispatch(authRegister(values) as any)
+      .then((res: any) => {
         dispatch(setUser({ ...res.user, password: values.password }));
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setError({
           isSet: true,
           msg: err.message,
@@ -68,13 +68,10 @@ const Register = () => {
           extraClass="mt-6"
         />
         <EmailInput
-          type={'email'}
           placeholder={'E-mail'}
           onChange={handleChangeWithError}
           value={values.email}
           name={'email'}
-          error={error.isSet}
-          errorText={error.msg}
           size={'default'}
           extraClass="mt-6"
         />

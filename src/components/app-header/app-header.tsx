@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '../../services/selectors/auth';
 import { ROUTES } from '../../utils/config';
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
   const user = useSelector(selectUser);
-  const profileText = (user && user.name) || 'Личный кабинет';
+  const profileText: string = (user && user.name) || 'Личный кабинет';
   return (
     <div className={styles.root}>
       <header className={styles.header}>
