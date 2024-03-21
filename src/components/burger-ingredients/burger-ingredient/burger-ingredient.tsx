@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredient.module.css';
 import { useDrag } from 'react-dnd';
-import { useDispatch, useSelector } from '../../../hooks/hooks';
+import { useDispatch, useSelector } from '../../../hooks';
 import { dropIngredient } from '../../../services/actions/burgconstructor';
 import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
 import { setIngredient } from '../../../services/actions/current-ingredient';

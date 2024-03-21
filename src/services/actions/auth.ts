@@ -1,12 +1,33 @@
 import { requestPayload, fetchWithRefresh } from '../../utils/http';
 import { CommonResponse } from '../../utils/http';
+import { NonNullableUser } from '../reducers/auth';
 
-export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
-export const SET_USER = 'SET_USER';
+export const SET_AUTH_CHECKED: 'SET_AUTH_CHECKED' = 'SET_AUTH_CHECKED';
+export const SET_USER: 'SET_USER' = 'SET_USER';
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
+export const GET_USER_REQUEST: 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED: 'GET_USER_FAILED' = 'GET_USER_FAILED';
+
+export interface ISetAuthCheckedAction {
+  readonly type: typeof SET_AUTH_CHECKED;
+}
+
+export interface ISetUser {
+  readonly type: typeof SET_USER;
+  readonly payload: NonNullableUser | null;
+}
+
+export interface IGetUserAction {
+  readonly type: typeof GET_USER_REQUEST;
+}
+export interface IGetUserFailedAction {
+  readonly type: typeof GET_USER_FAILED;
+}
+export interface IGetUserSuccessAction {
+  readonly type: typeof GET_USER_SUCCESS;
+  readonly payload: NonNullableUser;
+}
 
 export const setUser = (user: any) => {
   return {
@@ -122,3 +143,10 @@ export const checkUserAuth = () => {
     }
   };
 };
+
+export type TAuthActions =
+  | IGetUserAction
+  | IGetUserFailedAction
+  | IGetUserSuccessAction
+  | ISetAuthCheckedAction
+  | ISetUser;

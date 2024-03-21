@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './user-edit.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks';
 import { selectUser } from '../../services/selectors/auth';
 import { editUser, setUser } from '../../services/actions/auth';
 import { EditPayload } from '../../services/actions/auth';
@@ -66,7 +66,7 @@ const UserEdit: FC = () => {
       if (values.password) {
         patch.password = values.password;
       }
-      dispatch(setUser(patch));
+      dispatch(setUser(patch) as any);
       setIsNotEdit(true);
     }).catch((err: any) => {
       console.log(err.message);

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styles from './profile.module.css';
 
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../hooks';
 import { authLogout } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 

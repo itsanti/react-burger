@@ -1,7 +1,7 @@
 import React, { FC, useRef } from 'react';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDrag, useDrop } from 'react-dnd';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../../hooks';
 import styles from './burger-constructor-element.module.css';
 import { sortIngredients } from '../../../services/actions/burgconstructor';
 import { BurgerConstructorElementProps, IngredientProps, ConstructorElementDnD } from '../../../utils/types/prop-types';
@@ -37,7 +37,7 @@ const BurgerConstructorElement: FC<BurgerConstructorElementProps> = ({ index, el
           return;
         }
       }
-      dispatch(sortIngredients(dragIndex, hoverIndex));
+      dispatch(sortIngredients(dragIndex, hoverIndex) as any);
       (item as ConstructorElementDnD).index = hoverIndex;
     },
   });

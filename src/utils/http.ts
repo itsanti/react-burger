@@ -21,7 +21,7 @@ export type RequestOptions<R = { [key: string]: string }> = {
   method?: string;
 };
 
-type TServerResponse<T> = {
+export type TServerResponse<T> = {
   success: boolean;
 } & T;
 

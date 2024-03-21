@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
-import { useDispatch, useSelector } from '../../hooks/hooks';
+import { useDispatch, useSelector } from '../../hooks';
 import { getIngredients } from '../../services/actions/ingredients';
 import { selectIngredientsLoading, selectIngredientsError } from '../../services/selectors/ingredients';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -30,8 +30,8 @@ const App: FC = () => {
   };
 
   useEffect(() => {
-    dispatch(getIngredients() as any);
-    dispatch(checkUserAuth() as any);
+    dispatch(getIngredients());
+    dispatch(checkUserAuth());
   }, [dispatch]);
 
   return (

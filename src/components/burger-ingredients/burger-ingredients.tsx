@@ -2,16 +2,15 @@ import React, { FC, UIEvent, useState, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { SECTIONS } from '../../utils/config';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks';
 import { selectIngredients } from '../../services/selectors/ingredients';
 import BurgerIngredient from './burger-ingredient/burger-ingredient';
 import { Link, useLocation } from 'react-router-dom';
 import { ROUTES } from '../../utils/config';
-import { IngredientProps } from '../../utils/types/prop-types';
 
 const BurgerIngredients: FC = () => {
   const sections = [useRef<HTMLHeadingElement>(), useRef<HTMLHeadingElement>(), useRef<HTMLHeadingElement>()];
-  const ingredients: IngredientProps[] = useSelector(selectIngredients);
+  const ingredients = useSelector(selectIngredients);
   let location = useLocation();
 
   const [activeTab, setActiveTab] = useState<string>('bun');

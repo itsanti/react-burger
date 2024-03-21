@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styles from './app-header.module.css';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks';
 import { selectUser } from '../../services/selectors/auth';
 import { ROUTES } from '../../utils/config';
 

@@ -3,7 +3,7 @@ import { useForm } from '../hooks/useForm';
 import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../hooks';
 import { resetPassword } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 

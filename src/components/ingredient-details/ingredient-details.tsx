@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import styles from './ingredient-details.module.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { selectIngredients } from '../../services/selectors/ingredients';
-import { useDispatch, useSelector } from '../../hooks/hooks';
+import { useDispatch, useSelector } from '../../hooks';
 import { setIngredient } from '../../services/actions/current-ingredient';
 import { NoMatch } from '../../pages';
 import { IngredientProps } from '../../utils/types/prop-types';

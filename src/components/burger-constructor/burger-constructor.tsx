@@ -4,7 +4,7 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useDispatch, useSelector } from '../../hooks/hooks';
+import { useDispatch, useSelector } from '../../hooks';
 import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
 import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';

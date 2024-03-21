@@ -3,7 +3,7 @@ import { useForm } from '../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './login.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../hooks';
 import { authLogin, setUser } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 import { LoginPayload } from '../services/actions/auth';
@@ -36,7 +36,7 @@ const Login: FC = () => {
     ev.preventDefault();
     dispatch(authLogin(values) as any)
       .then((res: any) => {
-        dispatch(setUser({ ...res.user, password: values.password }));
+        dispatch(setUser({ ...res.user, password: values.password }) as any);
         localStorage.setItem('accessToken', res.accessToken);
         localStorage.setItem('refreshToken', res.refreshToken);
       })
