@@ -32,7 +32,7 @@ type LoginResponse = {
 } & RefreshResponse;
 
 export const authLogin = (values: LoginPayload) => {
-  return (dispatch: any) => requestPayload<LoginResponse>('/auth/login', { body: values });
+  return (dispatch: any) => requestPayload<LoginResponse, LoginPayload>('/auth/login', { body: values });
 };
 
 type LogoutResponse = {
@@ -43,7 +43,7 @@ export const authLogout = () => {
   return (dispatch: any) => {
     const token = localStorage.getItem('refreshToken');
     if (token) {
-      requestPayload<LogoutResponse>('/auth/logout', { body: { token } }).then(() => {
+      requestPayload<LogoutResponse, { token: string }>('/auth/logout', { body: { token } }).then(() => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         dispatch(setUser(null));
@@ -56,17 +56,17 @@ type RegisterResponse = LoginResponse;
 export type RegisterPayload = LoginPayload;
 
 export const authRegister = (values: RegisterPayload) => {
-  return (dispatch: any) => requestPayload<RegisterResponse>('/auth/register', { body: values });
+  return (dispatch: any) => requestPayload<RegisterResponse, LoginPayload>('/auth/register', { body: values });
 };
 
 export const forgotPassword = (email: string) => {
-  return (dispatch: any) => requestPayload<CommonResponse>('/password-reset', { body: { email } });
+  return (dispatch: any) => requestPayload<CommonResponse, { email: string }>('/password-reset', { body: { email } });
 };
 
 export type ResetPayload = { token: string; password: string };
 
 export const resetPassword = (values: ResetPayload) => {
-  return (dispatch: any) => requestPayload<CommonResponse>('/password-reset/reset', { body: values });
+  return (dispatch: any) => requestPayload<CommonResponse, ResetPayload>('/password-reset/reset', { body: values });
 };
 
 type RefreshResponse = {
@@ -77,7 +77,7 @@ type RefreshResponse = {
 export const refreshToken = () => {
   const token = localStorage.getItem('refreshToken');
   if (token) {
-    return requestPayload<RefreshResponse>('/auth/token', { body: { token } });
+    return requestPayload<RefreshResponse, { token: string }>('/auth/token', { body: { token } });
   }
 };
 

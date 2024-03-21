@@ -25,6 +25,25 @@ export type IngredientProps = {
   calories: number;
 };
 
+export type IUser = {
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IOrder = {
+  ingredients: IngredientProps[];
+  _id: string;
+  owner: IUser;
+  status: 'done';
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+  price: number;
+};
+
 export type OrderDetailsProps = {
   number: number;
 };

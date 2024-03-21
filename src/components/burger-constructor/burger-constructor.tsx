@@ -4,7 +4,7 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
 import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
@@ -39,24 +39,24 @@ const BurgerConstructor: FC = () => {
 
   const handleClose = (type: string, uuid?: string) => {
     if (type === 'bun') {
-      dispatch(delBun());
+      dispatch(delBun() as any);
     } else {
-      dispatch(delIngredientByUuid(uuid));
+      dispatch(delIngredientByUuid(uuid) as any);
     }
   };
 
   const onModalClosed = () => {
     dispatch(setOrderDetails(null));
-    dispatch(clearConstructor());
+    dispatch(clearConstructor() as any);
   };
 
   const onSetDetails = (constructorData: any) => {
-    const ingredients = [
+    const ingredients: string[] = [
       constructorData.bun._id,
       ...constructorData.ingredients.map((ingredient: any) => ingredient._id),
       constructorData.bun._id,
     ];
-    dispatch(getOrderDetails({ body: { ingredients } }) as any);
+    dispatch(getOrderDetails(ingredients));
   };
 
   const makeOrder = () => {
