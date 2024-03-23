@@ -4,7 +4,7 @@ import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-
 import { Link } from 'react-router-dom';
 import styles from './login.module.css';
 import { useDispatch } from '../hooks';
-import { authLogin, setUser } from '../services/actions/auth';
+import { authLogin } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 import { LoginPayload } from '../services/actions/auth';
 
@@ -20,7 +20,7 @@ const Login: FC = () => {
   });
 
   const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    setError({ isSet: false, msg: '' });
+    setError({ isSet: error.isSet, msg: error.msg });
     handleChange(ev);
   };
 
@@ -32,20 +32,16 @@ const Login: FC = () => {
     }
   }, [values]);
 
+  const setLoginError = (err: Error) => {
+    setError({
+      isSet: true,
+      msg: err.message,
+    });
+  };
+
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(authLogin(values) as any)
-      .then((res: any) => {
-        dispatch(setUser({ ...res.user, password: values.password }) as any);
-        localStorage.setItem('accessToken', res.accessToken);
-        localStorage.setItem('refreshToken', res.refreshToken);
-      })
-      .catch((err: any) => {
-        setError({
-          isSet: true,
-          msg: err.message,
-        });
-      });
+    dispatch(authLogin(values, setLoginError));
   };
 
   return (

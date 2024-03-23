@@ -37,7 +37,7 @@ const BurgerConstructorElement: FC<BurgerConstructorElementProps> = ({ index, el
           return;
         }
       }
-      dispatch(sortIngredients(dragIndex, hoverIndex) as any);
+      dispatch(sortIngredients(dragIndex, hoverIndex));
       (item as ConstructorElementDnD).index = hoverIndex;
     },
   });

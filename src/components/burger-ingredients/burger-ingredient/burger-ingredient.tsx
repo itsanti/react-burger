@@ -11,7 +11,7 @@ import { BurgerIngredientProps, IngredientProps } from '../../../utils/types/pro
 
 const BurgerIngredient: FC<BurgerIngredientProps> = ({ ingredient }) => {
   const dispatch = useDispatch();
-  const countersMap: any = useSelector(selectIngredientsCount);
+  const countersMap = useSelector(selectIngredientsCount);
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'ingredient',
@@ -19,7 +19,7 @@ const BurgerIngredient: FC<BurgerIngredientProps> = ({ ingredient }) => {
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult();
       if (item && dropResult) {
-        dispatch(dropIngredient(ingredient) as any);
+        dispatch(dropIngredient(ingredient));
       }
     },
     collect: (monitor) => ({

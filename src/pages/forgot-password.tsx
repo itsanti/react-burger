@@ -24,11 +24,12 @@ const ForgotPassword: FC = () => {
     }
   }, [values]);
 
+  const successRedirect = (): void => {
+    navigate(ROUTES.resetPassword, { replace: true, state: { from: ROUTES.forgotPassword } });
+  };
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(forgotPassword(values.email) as any).then(() => {
-      navigate(ROUTES.resetPassword, { replace: true, state: { from: ROUTES.forgotPassword } });
-    });
+    dispatch(forgotPassword(values.email, successRedirect));
   };
 
   return (

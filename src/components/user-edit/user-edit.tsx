@@ -32,6 +32,7 @@ const UserEdit: FC = () => {
   };
 
   useEffect(() => {
+
     const { name, email, password } = values;
     const { name: initName, email: initEmail, password: initPassword } = user;
 
@@ -64,6 +65,7 @@ const UserEdit: FC = () => {
     }
     dispatch(editUser(patch));
     setIsNotEdit(true);
+    setIsShowButtons(false);
   };
 
   return (

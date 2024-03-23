@@ -12,7 +12,7 @@ const Profile: FC = () => {
 
   const onLogout = (ev: React.MouseEvent<HTMLElement>) => {
     ev.preventDefault();
-    dispatch(authLogout() as any);
+    dispatch(authLogout());
   };
 
   const isIndex = location.pathname === ROUTES.profile.root;

@@ -15,7 +15,8 @@ import { selectUser } from '../../services/selectors/auth';
 import { useNavigate } from 'react-router-dom';
 import Preloader from '../preloader/preloader';
 import { ROUTES } from '../../utils/config';
-import { IngredientItemPick } from '../../utils/types/prop-types';
+import { IngredientItemPick, IngredientProps } from '../../utils/types/prop-types';
+
 
 const BurgerConstructor: FC = () => {
   const constructorData = useSelector(selectBurgConstructorData);
@@ -39,7 +40,7 @@ const BurgerConstructor: FC = () => {
 
   const handleClose = (type: string, uuid?: string) => {
     if (type === 'bun') {
-      dispatch(delBun() as any);
+      dispatch(delBun());
     } else {
       dispatch(delIngredientByUuid(uuid));
     }
@@ -47,14 +48,15 @@ const BurgerConstructor: FC = () => {
 
   const onModalClosed = () => {
     dispatch(setOrderDetails(null));
-    dispatch(clearConstructor() as any);
+    dispatch(clearConstructor());
   };
 
-  const onSetDetails = (constructorData: any) => {
+  type ConstructorData = typeof constructorData;
+  const onSetDetails = (constructorData: ConstructorData) => {
     const ingredients: string[] = [
-      constructorData.bun._id,
-      ...constructorData.ingredients.map((ingredient: any) => ingredient._id),
-      constructorData.bun._id,
+      (constructorData.bun as IngredientProps)._id,
+      ...constructorData.ingredients.map((ingredient: IngredientProps) => ingredient._id),
+      (constructorData.bun as IngredientProps)._id,
     ];
     dispatch(getOrderDetails(ingredients));
   };
@@ -88,7 +90,7 @@ const BurgerConstructor: FC = () => {
         }}
       />
       <div className={`${styles.container} ${constructorData.ingredients.length ? '' : styles.containerEmpty}`}>
-        {constructorData.ingredients.map((ingredient: any, index: number) => (
+        {constructorData.ingredients.map((ingredient: IngredientProps, index: number) => (
           <BurgerConstructorElement
             key={ingredient.uuid}
             index={index}

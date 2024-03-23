@@ -54,8 +54,17 @@ type LoginResponse = {
   };
 } & RefreshResponse;
 
-export const authLogin = (values: LoginPayload): AppThunkAction => {
-  return (dispatch) => requestPayload<LoginResponse, LoginPayload>('/auth/login', { body: values });
+export const authLogin = (values: LoginPayload, setLoginError: SetErrorCB): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<LoginResponse, LoginPayload>('/auth/login', { body: values })
+      .then((res) => {
+        dispatch(setUser({ ...res.user, password: values.password || '' }));
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+      })
+      .catch((err) => {
+        setLoginError(err);
+      });
 };
 
 type LogoutResponse = {
@@ -76,20 +85,44 @@ export const authLogout = (): AppThunkAction => {
 };
 
 type RegisterResponse = LoginResponse;
+type SetErrorCB = (err: Error) => void;
 export type RegisterPayload = LoginPayload;
 
-export const authRegister = (values: RegisterPayload): AppThunkAction => {
-  return (dispatch) => requestPayload<RegisterResponse, LoginPayload>('/auth/register', { body: values });
+export const authRegister = (values: RegisterPayload, setRegisterError: SetErrorCB): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<RegisterResponse, LoginPayload>('/auth/register', { body: values })
+      .then((res) => {
+        dispatch(setUser({ ...res.user, password: values.password || '' }));
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+      })
+      .catch((err) => {
+        setRegisterError(err);
+      });
 };
 
-export const forgotPassword = (email: string): AppThunkAction => {
-  return (dispatch) => requestPayload<CommonResponse, { email: string }>('/password-reset', { body: { email } });
+export const forgotPassword = (email: string, successRedirect: () => void): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<CommonResponse, { email: string }>('/password-reset', { body: { email } }).then(() => {
+      successRedirect();
+    });
 };
 
 export type ResetPayload = { token: string; password: string };
 
-export const resetPassword = (values: ResetPayload): AppThunkAction => {
-  return (dispatch) => requestPayload<CommonResponse, ResetPayload>('/password-reset/reset', { body: values });
+export const resetPassword = (
+  values: ResetPayload,
+  successRedirect: () => void,
+  setResetError: SetErrorCB,
+): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<CommonResponse, ResetPayload>('/password-reset/reset', { body: values })
+      .then(() => {
+        successRedirect();
+      })
+      .catch((err) => {
+        setResetError(err);
+      });
 };
 
 type RefreshResponse = {

@@ -21,7 +21,7 @@ const ResetPassword: FC = () => {
   });
 
   const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    setError({ isSet: false, msg: '' });
+    setError({ isSet: error.isSet, msg: error.msg });
     handleChange(ev);
   };
 
@@ -39,18 +39,20 @@ const ResetPassword: FC = () => {
     }
   }, [values]);
 
+  const setResetError = (err: Error): void => {
+    setError({
+      isSet: true,
+      msg: err.message,
+    });
+  }
+
+  const successRedirect = () => {
+    navigate(ROUTES.login, { replace: true });
+  };
+
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(resetPassword(values) as any)
-      .then((res: any) => {
-        navigate(ROUTES.login, { replace: true });
-      })
-      .catch((err: any) => {
-        setError({
-          isSet: true,
-          msg: err.message,
-        });
-      });
+    dispatch(resetPassword(values, successRedirect, setResetError));
   };
 
   return (
