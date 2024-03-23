@@ -4,8 +4,9 @@ import { Button, Input } from '@ya.praktikum/react-developer-burger-ui-component
 import styles from './user-edit.module.css';
 import { useDispatch, useSelector } from '../../hooks';
 import { selectUser } from '../../services/selectors/auth';
-import { editUser, setUser } from '../../services/actions/auth';
+import { editUser } from '../../services/actions/auth';
 import { EditPayload } from '../../services/actions/auth';
+
 
 const UserEdit: FC = () => {
   const [isNotEdit, setIsNotEdit] = useState(true);
@@ -61,16 +62,8 @@ const UserEdit: FC = () => {
     if (values.password !== user.password) {
       patch.password = values.password;
     }
-    dispatch(editUser(patch) as any).then((res: any) => {
-      const patch = { ...res.user };
-      if (values.password) {
-        patch.password = values.password;
-      }
-      dispatch(setUser(patch) as any);
-      setIsNotEdit(true);
-    }).catch((err: any) => {
-      console.log(err.message);
-    });
+    dispatch(editUser(patch));
+    setIsNotEdit(true);
   };
 
   return (

@@ -4,8 +4,14 @@ import { TCurrentIngredientActions } from '../../services/actions/current-ingred
 import { TOrderActions } from '../../services/actions/order';
 import { TIngredientsActions } from '../../services/actions/ingredients';
 import { TBurgerConstructorActions } from '../../services/actions/burger-constructor';
+import { TAuthActions } from '../../services/actions/auth';
 
-type TApplicationActions = TIngredientsActions | TCurrentIngredientActions | TOrderActions | TBurgerConstructorActions;
+type TApplicationActions =
+  | TAuthActions
+  | TIngredientsActions
+  | TCurrentIngredientActions
+  | TOrderActions
+  | TBurgerConstructorActions;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;
 export type AppThunkAction<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, TApplicationActions>;

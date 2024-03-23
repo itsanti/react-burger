@@ -65,7 +65,7 @@ const Login: FC = () => {
           placeholder={'Пароль'}
           onChange={handleChangeWithError}
           icon={isPasswordVisible ? 'HideIcon' : 'ShowIcon'}
-          value={values.password}
+          value={values.password || ''}
           name={'password'}
           error={error.isSet}
           errorText={error.msg}
