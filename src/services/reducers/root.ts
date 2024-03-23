@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducerIngredients } from './ingredients';
-import { reducerBurgConstructor } from './burgconstructor';
+import { reducerBurgConstructor } from './burger-constructor';
 import { reducerCurrentIngredient } from './current-ingredient';
 import { reducerOrder } from './order';
 import { reducerAuth } from './auth';

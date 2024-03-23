@@ -5,10 +5,10 @@ import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-co
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { useDispatch, useSelector } from '../../hooks';
-import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
+import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burger-constructor';
 import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
-import { delBun, delIngredientByUuid, clearConstructor } from '../../services/actions/burgconstructor';
+import { delBun, delIngredientByUuid, clearConstructor } from '../../services/actions/burger-constructor';
 import { useDrop } from 'react-dnd';
 import BurgerConstructorElement from './burger-constructor-element/burger-constructor-element';
 import { selectUser } from '../../services/selectors/auth';
@@ -29,7 +29,7 @@ const BurgerConstructor: FC = () => {
     () => ({
       accept: 'ingredient',
       canDrop: (item: IngredientItemPick) => {
-        return constructorData?.bun || item.type === 'bun';
+        return Boolean(constructorData?.bun) || item.type === 'bun';
       },
     }),
     [constructorData],
@@ -41,7 +41,7 @@ const BurgerConstructor: FC = () => {
     if (type === 'bun') {
       dispatch(delBun() as any);
     } else {
-      dispatch(delIngredientByUuid(uuid) as any);
+      dispatch(delIngredientByUuid(uuid));
     }
   };
 
@@ -78,7 +78,7 @@ const BurgerConstructor: FC = () => {
     <div ref={drop} className={styles.root}>
       <ConstructorElement
         type="top"
-        isLocked={constructorData.ingredients.length}
+        isLocked={!!constructorData.ingredients.length}
         text={constructorData.bun.name + ' (верх)'}
         price={constructorData.bun.price}
         thumbnail={constructorData.bun.image}
@@ -99,7 +99,7 @@ const BurgerConstructor: FC = () => {
       </div>
       <ConstructorElement
         type="bottom"
-        isLocked={constructorData.ingredients.length}
+        isLocked={!!constructorData.ingredients.length}
         text={constructorData.bun.name + ' (низ)'}
         price={constructorData.bun.price}
         thumbnail={constructorData.bun.image}

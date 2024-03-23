@@ -3,8 +3,8 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import styles from './burger-ingredient.module.css';
 import { useDrag } from 'react-dnd';
 import { useDispatch, useSelector } from '../../../hooks';
-import { dropIngredient } from '../../../services/actions/burgconstructor';
-import { selectIngredientsCount } from '../../../services/selectors/burgconstructor';
+import { dropIngredient } from '../../../services/actions/burger-constructor';
+import { selectIngredientsCount } from '../../../services/selectors/burger-constructor';
 import { setIngredient } from '../../../services/actions/current-ingredient';
 import { BurgerIngredientProps, IngredientProps } from '../../../utils/types/prop-types';
 
