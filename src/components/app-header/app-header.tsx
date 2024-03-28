@@ -27,11 +27,15 @@ const AppHeader: FC = () => {
               </NavLink>
             </li>
             <li className={styles.menuItem + ' mt-4 mb-4 pl-5 pr-5 pt-4 pb-4'}>
-              <NavLink to={ROUTES.index}>
-                <div className="mr-2">
-                  <ListIcon type="secondary" />
-                </div>
-                Лента заказов
+              <NavLink to={ROUTES.feed} className={({ isActive }) => (isActive ? styles.active : styles.link)}>
+                {({ isActive }) => (
+                  <>
+                    <div className="mr-2">
+                      <ListIcon type={isActive ? 'primary' : 'secondary'} />
+                    </div>
+                    Лента заказов
+                  </>
+                )}
               </NavLink>
             </li>
           </ul>

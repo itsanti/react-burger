@@ -25,7 +25,6 @@ const Profile: FC = () => {
             Профиль
           </NavLink>
           <NavLink
-            end
             to={ROUTES.profile.orders}
             className={({ isActive }) => (isActive ? styles.active : styles.link)}
           >

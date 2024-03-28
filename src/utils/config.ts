@@ -21,7 +21,10 @@ interface AppRoutes {
   profile: {
     root: string;
     orders: string;
+    orderByNumber: string;
   };
+  feed: string;
+  feedByNumber: string;
 }
 
 export const ROUTES: AppRoutes = {
@@ -37,5 +40,8 @@ export const ROUTES: AppRoutes = {
   profile: {
     root: '/profile',
     orders: '/profile/orders',
+    orderByNumber: '/profile/orders/:orderNumber',
   },
+  feed: '/feed',
+  feedByNumber: '/feed/:orderNumber',
 };
