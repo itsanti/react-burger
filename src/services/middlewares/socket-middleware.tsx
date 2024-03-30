@@ -11,17 +11,14 @@ export const socketMiddleware = (wsActions: TFeedStoreActions): Middleware => {
             const { dispatch } = store;
             const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
             if (action.type === wsInit) {
-                console.log('WebSocket connection initiated:', action.payload);
                 const url = action.payload;
-                socket = (!socket || socket.readyState !== 1) ? new WebSocket(url) : socket;
+                socket = new WebSocket(url);
 
                 socket.onopen = (event) => {
                     dispatch({ type: onOpen });
                 };
 
                 socket.onerror = (event) => {
-                    console.log(event);
-
                     dispatch({ type: onError, payload: event });
                 };
 
@@ -33,7 +30,6 @@ export const socketMiddleware = (wsActions: TFeedStoreActions): Middleware => {
                 };
 
                 socket.onmessage = (event) => {
-                    console.log('onmessage');
                     const { data } = event;
                     const parsedData = JSON.parse(data);
                     dispatch({ type: onMessage, payload: parsedData });

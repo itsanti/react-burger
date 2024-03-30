@@ -93,6 +93,7 @@ export type OrdersList = {
   _id: string;
   status: OrderStatus;
   number: number;
+  name: string;
   createdAt: string;
   updatedAt: string;
 };
