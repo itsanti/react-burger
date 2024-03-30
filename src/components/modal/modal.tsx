@@ -4,8 +4,11 @@ import styles from './modal.module.css';
 import { ReactComponent as CloseIcon } from '../../images/close-icon.svg';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { ModalProps } from '../../utils/types/prop-types';
+import { useParams } from 'react-router-dom';
 
 const Modal: FC<ModalProps> = ({ children, title, setIsModalOpened }) => {
+  const { orderNumber } = useParams();
+
   const escHandler = useCallback<EventListener>(
     (ev: Event | KeyboardEvent) => {
       if ('key' in ev && ev.key === 'Escape') {
@@ -22,11 +25,13 @@ const Modal: FC<ModalProps> = ({ children, title, setIsModalOpened }) => {
     };
   }, [escHandler]);
 
+  const modalTitle = orderNumber ? `#${orderNumber}` : title;
+
   return createPortal(
     <>
       <div className={styles.modal}>
         <div className={styles.title}>
-          {title}
+          {modalTitle}
           <button className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
             <CloseIcon />
           </button>

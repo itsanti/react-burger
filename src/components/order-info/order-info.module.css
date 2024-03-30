@@ -1,0 +1,88 @@
+.root {
+  width: 640px;
+  margin: 0 auto;
+}
+
+.orderNumber {
+  composes: text text_type_digits-default from global;
+  text-align: center;
+  margin: 0 auto 40px;
+}
+
+.price {
+  composes: text text_type_digits-default from global;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+}
+
+.price svg {
+  margin-left: 8px;
+}
+
+.header {
+  margin-bottom: 60px;
+}
+
+.orderIngredientsTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+}
+
+.orderIngredients {
+  list-style-type: none;
+  margin: 0 0 40px 0;
+  padding: 0;
+  max-height: 304px;
+  overflow-y: auto;
+}
+
+.orderIngredient {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-right: 24px;
+}
+
+.orderIngredient .price {
+  margin-left: auto;
+}
+
+.orderIngredient:last-child {
+  margin-bottom: 0;
+}
+
+.orderImage {
+  margin-right: 16px;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #4c4cff;
+  background-color: #1c1c21;
+}
+
+.orderName {
+  composes: text text_type_main-medium from global;
+  margin-top: 40px;
+}
+
+.orderStatus {
+  margin: 12px 0 0 0;
+  color: #00cccc;
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderDate {
+  composes: text text_type_main-default text_color_inactive from global;
+  font-size: 16px;
+}

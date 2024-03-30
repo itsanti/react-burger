@@ -1,28 +1,51 @@
 import { requestPayload, fetchWithRefresh } from '../../utils/http';
 import { CommonResponse } from '../../utils/http';
+import { NonNullableUser } from '../reducers/auth';
+import { AppThunkAction } from '../../utils/types';
 
-export const SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
-export const SET_USER = 'SET_USER';
+export const SET_AUTH_CHECKED: 'SET_AUTH_CHECKED' = 'SET_AUTH_CHECKED';
+export const SET_USER: 'SET_USER' = 'SET_USER';
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
+export const GET_USER_REQUEST: 'GET_USER_REQUEST' = 'GET_USER_REQUEST';
+export const GET_USER_SUCCESS: 'GET_USER_SUCCESS' = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED: 'GET_USER_FAILED' = 'GET_USER_FAILED';
 
-export const setUser = (user: any) => {
+export interface ISetAuthCheckedAction {
+  readonly type: typeof SET_AUTH_CHECKED;
+  readonly payload: boolean;
+}
+
+export interface ISetUser {
+  readonly type: typeof SET_USER;
+  readonly payload: NonNullableUser | null;
+}
+
+export interface IGetUserAction {
+  readonly type: typeof GET_USER_REQUEST;
+}
+export interface IGetUserFailedAction {
+  readonly type: typeof GET_USER_FAILED;
+}
+export interface IGetUserSuccessAction {
+  readonly type: typeof GET_USER_SUCCESS;
+  readonly payload: NonNullableUser;
+}
+
+export const setUser = (user: NonNullableUser | null): ISetUser => {
   return {
     type: SET_USER,
     payload: user,
   };
 };
 
-export const setAuthChecked = (auth: any) => {
+export const setAuthChecked = (auth: boolean): ISetAuthCheckedAction => {
   return {
     type: SET_AUTH_CHECKED,
     payload: auth,
   };
 };
 
-export type LoginPayload = { email: string; name?: string; password: string };
+export type LoginPayload = { email: string; name?: string; password?: string };
 
 type LoginResponse = {
   user: {
@@ -31,19 +54,28 @@ type LoginResponse = {
   };
 } & RefreshResponse;
 
-export const authLogin = (values: LoginPayload) => {
-  return (dispatch: any) => requestPayload<LoginResponse>('/auth/login', { body: values });
+export const authLogin = (values: LoginPayload, setLoginError: SetErrorCB): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<LoginResponse, LoginPayload>('/auth/login', { body: values })
+      .then((res) => {
+        dispatch(setUser({ ...res.user, password: values.password || '' }));
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+      })
+      .catch((err) => {
+        setLoginError(err);
+      });
 };
 
 type LogoutResponse = {
   message: string;
 };
 
-export const authLogout = () => {
-  return (dispatch: any) => {
+export const authLogout = (): AppThunkAction => {
+  return (dispatch) => {
     const token = localStorage.getItem('refreshToken');
     if (token) {
-      requestPayload<LogoutResponse>('/auth/logout', { body: { token } }).then(() => {
+      requestPayload<LogoutResponse, { token: string }>('/auth/logout', { body: { token } }).then(() => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         dispatch(setUser(null));
@@ -53,20 +85,44 @@ export const authLogout = () => {
 };
 
 type RegisterResponse = LoginResponse;
+type SetErrorCB = (err: Error) => void;
 export type RegisterPayload = LoginPayload;
 
-export const authRegister = (values: RegisterPayload) => {
-  return (dispatch: any) => requestPayload<RegisterResponse>('/auth/register', { body: values });
+export const authRegister = (values: RegisterPayload, setRegisterError: SetErrorCB): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<RegisterResponse, LoginPayload>('/auth/register', { body: values })
+      .then((res) => {
+        dispatch(setUser({ ...res.user, password: values.password || '' }));
+        localStorage.setItem('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+      })
+      .catch((err) => {
+        setRegisterError(err);
+      });
 };
 
-export const forgotPassword = (email: string) => {
-  return (dispatch: any) => requestPayload<CommonResponse>('/password-reset', { body: { email } });
+export const forgotPassword = (email: string, successRedirect: () => void): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<CommonResponse, { email: string }>('/password-reset', { body: { email } }).then(() => {
+      successRedirect();
+    });
 };
 
 export type ResetPayload = { token: string; password: string };
 
-export const resetPassword = (values: ResetPayload) => {
-  return (dispatch: any) => requestPayload<CommonResponse>('/password-reset/reset', { body: values });
+export const resetPassword = (
+  values: ResetPayload,
+  successRedirect: () => void,
+  setResetError: SetErrorCB,
+): AppThunkAction => {
+  return (dispatch) =>
+    requestPayload<CommonResponse, ResetPayload>('/password-reset/reset', { body: values })
+      .then(() => {
+        successRedirect();
+      })
+      .catch((err) => {
+        setResetError(err);
+      });
 };
 
 type RefreshResponse = {
@@ -75,40 +131,53 @@ type RefreshResponse = {
 };
 
 export const refreshToken = () => {
-  const token = localStorage.getItem('refreshToken');
-  if (token) {
-    return requestPayload<RefreshResponse>('/auth/token', { body: { token } });
+  let token = localStorage.getItem('refreshToken');
+  if (!token) {
+    token = '';
   }
+  return requestPayload<RefreshResponse, { token: string }>('/auth/token', { body: { token } });
 };
 
 type UserResponse = {
-  email: string;
-  name: string;
+  user: { email: string; name: string; password?: string };
 };
 
 export const getUser = () => {
   const accessToken = localStorage.getItem('accessToken');
+  let headers = {};
   if (accessToken) {
-    const headers = { authorization: accessToken };
-    return (dispatch: any) => fetchWithRefresh<UserResponse>('/auth/user', { headers, method: 'GET' });
+    headers = { authorization: accessToken };
   }
+  return fetchWithRefresh<UserResponse>('/auth/user', { headers, method: 'GET' });
 };
 
 export type EditPayload = Partial<LoginPayload>;
 
-export const editUser = (values: EditPayload) => {
+export const editUser = (values: EditPayload): AppThunkAction => {
   const accessToken = localStorage.getItem('accessToken');
+  let headers = {};
   if (accessToken) {
-    const headers = { Authorization: accessToken };
-    return (dispatch: any) => fetchWithRefresh('/auth/user', { headers, method: 'PATCH', body: values });
+    headers = { Authorization: accessToken };
   }
+  return (dispatch) =>
+    fetchWithRefresh<UserResponse>('/auth/user', { headers, method: 'PATCH', body: values })
+      .then((res) => {
+        const patch = { ...res.user };
+        if (values.password) {
+          patch.password = values.password;
+        }
+        dispatch(setUser(patch as NonNullableUser));
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
 };
 
-export const checkUserAuth = () => {
-  return (dispatch: any) => {
+export const checkUserAuth = (): AppThunkAction => {
+  return (dispatch) => {
     if (localStorage.getItem('accessToken')) {
-      dispatch(getUser())
-        .then((res: any) => {
+      getUser()
+        .then((res) => {
           dispatch(setUser({ ...res.user, password: '' }));
         })
         .catch(() => {
@@ -122,3 +191,10 @@ export const checkUserAuth = () => {
     }
   };
 };
+
+export type TAuthActions =
+  | IGetUserAction
+  | IGetUserFailedAction
+  | IGetUserSuccessAction
+  | ISetAuthCheckedAction
+  | ISetUser;

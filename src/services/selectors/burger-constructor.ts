@@ -1,16 +1,17 @@
 import { createSelector } from 'reselect';
+import { RootState } from '../../utils/types';
 
-const selectBurgConstructorModule = (state) => state.burgConstructor;
+const selectBurgConstructorModule = (state: RootState) => state.burgConstructor;
 
-export const selectBurgConstructorData = (state) => selectBurgConstructorModule(state);
+export const selectBurgConstructorData = (state: RootState) => selectBurgConstructorModule(state);
 
-export const selectIngredients = (state) => selectBurgConstructorModule(state).ingredients;
+export const selectIngredients = (state: RootState) => selectBurgConstructorModule(state).ingredients;
 
-export const selectBun = (state) => selectBurgConstructorModule(state).bun;
+export const selectBun = (state: RootState) => selectBurgConstructorModule(state).bun;
 
 export const selectIngredientsCount = createSelector([selectBun, selectIngredients], (bun, ingredients) => {
   if (!bun) return null;
-  const countersMap = {};
+  const countersMap: { [key: string]: number } = {};
   countersMap[bun._id] = 2;
   for (let ingredient of ingredients) {
     countersMap[ingredient._id] = countersMap[ingredient._id] !== undefined ? countersMap[ingredient._id] + 1 : 1;

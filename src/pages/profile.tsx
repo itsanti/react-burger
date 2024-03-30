@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import styles from './profile.module.css';
 
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../hooks';
 import { authLogout } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
@@ -12,7 +12,7 @@ const Profile: FC = () => {
 
   const onLogout = (ev: React.MouseEvent<HTMLElement>) => {
     ev.preventDefault();
-    dispatch(authLogout() as any);
+    dispatch(authLogout());
   };
 
   const isIndex = location.pathname === ROUTES.profile.root;
@@ -25,7 +25,6 @@ const Profile: FC = () => {
             Профиль
           </NavLink>
           <NavLink
-            end
             to={ROUTES.profile.orders}
             className={({ isActive }) => (isActive ? styles.active : styles.link)}
           >

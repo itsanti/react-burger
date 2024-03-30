@@ -25,6 +25,25 @@ export type IngredientProps = {
   calories: number;
 };
 
+export type IUser = {
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IOrder = {
+  ingredients: IngredientProps[];
+  _id: string;
+  owner: IUser;
+  status: 'done';
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+  price: number;
+};
+
 export type OrderDetailsProps = {
   number: number;
 };
@@ -54,4 +73,50 @@ export type ModalOverlayProps = {
 export type ProtectedProps = {
   onlyUnAuth?: boolean;
   component: ReactElement;
+};
+
+export enum WebsocketStatus {
+  CONNECTING = 'CONNECTING...',
+  OPEN = 'ONLINE',
+  CLOSING = 'CLOSING',
+  CLOSED = 'OFFLINE',
+}
+
+export enum OrderStatus {
+  created = 'created',
+  pending = 'pending',
+  done = 'done',
+}
+
+export const OrderStatusI18n = {
+  [OrderStatus.created]: 'Создан',
+  [OrderStatus.pending]: 'Готовится',
+  [OrderStatus.done]: 'Выполнен',
+};
+
+export type OrdersList = {
+  ingredients: string[];
+  _id: string;
+  status: OrderStatus;
+  number: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TMessage = {
+  success: boolean;
+  orders: OrdersList[];
+  total: number;
+  totalToday: number;
+};
+
+export type TwsActions = {
+  wsInit: string;
+  wsClose: string;
+  wsSendMessage?: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
 };

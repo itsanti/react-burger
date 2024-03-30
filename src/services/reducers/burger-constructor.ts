@@ -4,15 +4,25 @@ import {
   DEL_BUN,
   SORT_INGREDIENTS,
   CLEAR_CONSTRUCTOR,
-} from '../actions/burgconstructor';
+} from '../actions/burger-constructor';
 import { swapElements } from '../../utils/utils';
+import { IngredientProps } from '../../utils/types/prop-types';
+import { TBurgerConstructorActions } from '../actions/burger-constructor';
 
-const initialState = {
+type BurgerConstructorState = {
+  bun: (IngredientProps & { uuid: string }) | null;
+  ingredients: IngredientProps[];
+};
+
+const initialState: BurgerConstructorState = {
   bun: null,
   ingredients: [],
 };
 
-export const reducerBurgConstructor = (state = initialState, action) => {
+export const reducerBurgConstructor = (
+  state = initialState,
+  action: TBurgerConstructorActions,
+): BurgerConstructorState => {
   switch (action.type) {
     case CLEAR_CONSTRUCTOR:
       return initialState;

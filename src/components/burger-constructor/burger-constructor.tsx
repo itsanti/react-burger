@@ -4,18 +4,19 @@ import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-comp
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burgconstructor';
+import { useDispatch, useSelector } from '../../hooks';
+import { selectBurgConstructorData, selectTotalPrice } from '../../services/selectors/burger-constructor';
 import { selectCurrentOrder, selectOrderIsLoading } from '../../services/selectors/order';
 import { getOrderDetails, setOrderDetails } from '../../services/actions/order';
-import { delBun, delIngredientByUuid, clearConstructor } from '../../services/actions/burgconstructor';
+import { delBun, delIngredientByUuid, clearConstructor } from '../../services/actions/burger-constructor';
 import { useDrop } from 'react-dnd';
 import BurgerConstructorElement from './burger-constructor-element/burger-constructor-element';
 import { selectUser } from '../../services/selectors/auth';
 import { useNavigate } from 'react-router-dom';
 import Preloader from '../preloader/preloader';
 import { ROUTES } from '../../utils/config';
-import { IngredientItemPick } from '../../utils/types/prop-types';
+import { IngredientItemPick, IngredientProps } from '../../utils/types/prop-types';
+
 
 const BurgerConstructor: FC = () => {
   const constructorData = useSelector(selectBurgConstructorData);
@@ -29,7 +30,7 @@ const BurgerConstructor: FC = () => {
     () => ({
       accept: 'ingredient',
       canDrop: (item: IngredientItemPick) => {
-        return constructorData?.bun || item.type === 'bun';
+        return Boolean(constructorData?.bun) || item.type === 'bun';
       },
     }),
     [constructorData],
@@ -50,13 +51,14 @@ const BurgerConstructor: FC = () => {
     dispatch(clearConstructor());
   };
 
-  const onSetDetails = (constructorData: any) => {
-    const ingredients = [
-      constructorData.bun._id,
-      ...constructorData.ingredients.map((ingredient: any) => ingredient._id),
-      constructorData.bun._id,
+  type ConstructorData = typeof constructorData;
+  const onSetDetails = (constructorData: ConstructorData) => {
+    const ingredients: string[] = [
+      (constructorData.bun as IngredientProps)._id,
+      ...constructorData.ingredients.map((ingredient: IngredientProps) => ingredient._id),
+      (constructorData.bun as IngredientProps)._id,
     ];
-    dispatch(getOrderDetails({ body: { ingredients } }) as any);
+    dispatch(getOrderDetails(ingredients));
   };
 
   const makeOrder = () => {
@@ -78,7 +80,7 @@ const BurgerConstructor: FC = () => {
     <div ref={drop} className={styles.root}>
       <ConstructorElement
         type="top"
-        isLocked={constructorData.ingredients.length}
+        isLocked={!!constructorData.ingredients.length}
         text={constructorData.bun.name + ' (верх)'}
         price={constructorData.bun.price}
         thumbnail={constructorData.bun.image}
@@ -88,7 +90,7 @@ const BurgerConstructor: FC = () => {
         }}
       />
       <div className={`${styles.container} ${constructorData.ingredients.length ? '' : styles.containerEmpty}`}>
-        {constructorData.ingredients.map((ingredient: any, index: number) => (
+        {constructorData.ingredients.map((ingredient: IngredientProps, index: number) => (
           <BurgerConstructorElement
             key={ingredient.uuid}
             index={index}
@@ -99,7 +101,7 @@ const BurgerConstructor: FC = () => {
       </div>
       <ConstructorElement
         type="bottom"
-        isLocked={constructorData.ingredients.length}
+        isLocked={!!constructorData.ingredients.length}
         text={constructorData.bun.name + ' (низ)'}
         price={constructorData.bun.price}
         thumbnail={constructorData.bun.image}
@@ -117,7 +119,7 @@ const BurgerConstructor: FC = () => {
           Оформить заказ
         </Button>
         {orderIsLoading && (
-          <Modal title="Заказ готовится" setIsModalOpened={() => false}>
+          <Modal title="Заказ готовится" setIsModalOpened={onModalClosed}>
             <Preloader />
           </Modal>
         )}

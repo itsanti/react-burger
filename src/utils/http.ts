@@ -15,13 +15,13 @@ const checkSuccess = <T>(res: TServerResponse<T>) => {
   return Promise.reject(res);
 };
 
-export type RequestOptions<T = { [key: string]: string }> = {
+export type RequestOptions<R = { [key: string]: string }> = {
   headers?: { [key: string]: string };
-  body?: BodyInit | T;
+  body?: BodyInit | R;
   method?: string;
 };
 
-type TServerResponse<T> = {
+export type TServerResponse<T> = {
   success: boolean;
 } & T;
 
@@ -31,7 +31,7 @@ export const request = async <T>(path: string, options: RequestInit | undefined)
   return fetch(`${API_URL}${path}`, options).then(checkResponse).then(checkSuccess);
 };
 
-export const requestPayload = <T>(path: string, options: RequestOptions) => {
+export const requestPayload = <T, R = RequestOptions>(path: string, options: RequestOptions<R>) => {
   const defaultOptions: RequestInit = {
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -42,12 +42,12 @@ export const requestPayload = <T>(path: string, options: RequestOptions) => {
   return request<T>(path, { ...defaultOptions, body: JSON.stringify(options.body) });
 };
 
-export const fetchWithRefresh = async <T>(url: string, options: RequestOptions) => {
+export const fetchWithRefresh = async <T, R = { [key: string]: string }>(url: string, options: RequestOptions<R>) => {
   try {
     if (options.method === 'GET') {
       return await request<T>(url, options as RequestInit);
     }
-    return await requestPayload<T>(url, options);
+    return await requestPayload<T, R>(url, options);
   } catch (err) {
     let message = 'Unknown Error';
     if (err instanceof Error) message = err.message;
@@ -61,7 +61,7 @@ export const fetchWithRefresh = async <T>(url: string, options: RequestOptions) 
       if (options.method === 'GET') {
         return await request<T>(url, options as RequestInit);
       }
-      return await requestPayload<T>(url, options);
+      return await requestPayload<T, R>(url, options);
     } else {
       return Promise.reject(err);
     }

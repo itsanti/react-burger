@@ -3,14 +3,14 @@ import { useForm } from '../hooks/useForm';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link } from 'react-router-dom';
 import styles from './register.module.css';
-import { useDispatch } from 'react-redux';
-import { authRegister, setUser } from '../services/actions/auth';
+import { useDispatch } from '../hooks';
+import { authRegister } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
 const Register: FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [, setError] = useState({ isSet: false, msg: '' });
+  const [error, setError] = useState({ isSet: false, msg: '' });
   const dispatch = useDispatch();
 
   const initialFormState = useMemo(
@@ -25,7 +25,7 @@ const Register: FC = () => {
   const { values, handleChange } = useForm(initialFormState);
 
   const handleChangeWithError = (ev: React.ChangeEvent<HTMLInputElement>) => {
-    setError({ isSet: false, msg: '' });
+    setError({ isSet: error.isSet, msg: error.msg });
     handleChange(ev);
   };
 
@@ -37,20 +37,16 @@ const Register: FC = () => {
     }
   }, [values]);
 
+  const setRegisterError = (err: Error): void => {
+    setError({
+      isSet: true,
+      msg: err.message,
+    });
+  };
+
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(authRegister(values) as any)
-      .then((res: any) => {
-        dispatch(setUser({ ...res.user, password: values.password }));
-        localStorage.setItem('accessToken', res.accessToken);
-        localStorage.setItem('refreshToken', res.refreshToken);
-      })
-      .catch((err: any) => {
-        setError({
-          isSet: true,
-          msg: err.message,
-        });
-      });
+    dispatch(authRegister(values, setRegisterError));
   };
 
   return (
@@ -63,7 +59,8 @@ const Register: FC = () => {
           onChange={handleChange}
           value={values.name}
           name={'name'}
-          error={false}
+          error={error.isSet}
+          errorText={error.msg}
           size={'default'}
           extraClass="mt-6"
         />
@@ -82,7 +79,8 @@ const Register: FC = () => {
           icon={isPasswordVisible ? 'HideIcon' : 'ShowIcon'}
           value={values.password}
           name={'password'}
-          error={false}
+          error={error.isSet}
+          errorText={error.msg}
           onIconClick={() => setIsPasswordVisible(!isPasswordVisible)}
           size={'default'}
           extraClass="mt-6"

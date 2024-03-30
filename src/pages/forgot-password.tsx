@@ -3,7 +3,7 @@ import { useForm } from '../hooks/useForm';
 import { Button, EmailInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './forgot-password.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../hooks';
 import { forgotPassword } from '../services/actions/auth';
 import { ROUTES } from '../utils/config';
 
@@ -24,11 +24,12 @@ const ForgotPassword: FC = () => {
     }
   }, [values]);
 
+  const successRedirect = (): void => {
+    navigate(ROUTES.resetPassword, { replace: true, state: { from: ROUTES.forgotPassword } });
+  };
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    dispatch(forgotPassword(values.email) as any).then(() => {
-      navigate(ROUTES.resetPassword, { replace: true, state: { from: ROUTES.forgotPassword } });
-    });
+    dispatch(forgotPassword(values.email, successRedirect));
   };
 
   return (

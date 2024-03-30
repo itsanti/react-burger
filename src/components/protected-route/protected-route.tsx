@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks';
 import { Navigate, useLocation } from 'react-router-dom';
 import { selectIsAuthChecked, selectUser } from '../../services/selectors/auth';
 import { ROUTES } from '../../utils/config';
