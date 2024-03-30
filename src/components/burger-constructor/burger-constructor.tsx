@@ -119,7 +119,7 @@ const BurgerConstructor: FC = () => {
           Оформить заказ
         </Button>
         {orderIsLoading && (
-          <Modal title="Заказ готовится" setIsModalOpened={() => false}>
+          <Modal title="Заказ готовится" setIsModalOpened={onModalClosed}>
             <Preloader />
           </Modal>
         )}

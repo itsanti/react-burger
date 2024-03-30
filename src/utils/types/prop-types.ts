@@ -88,6 +88,12 @@ export enum OrderStatus {
   done = 'done',
 }
 
+export const OrderStatusI18n = {
+  [OrderStatus.created]: 'Создан',
+  [OrderStatus.pending]: 'Готовится',
+  [OrderStatus.done]: 'Выполнен',
+};
+
 export type OrdersList = {
   ingredients: string[];
   _id: string;

@@ -48,8 +48,8 @@ export const socketMiddleware = (
                                 refreshData.accessToken.replace("Bearer ", "")
                             );
                             dispatch({ type: wsInit, payload: wssUrl });
-                        }).catch(err => {
-                            console.log(err);
+                        }).catch((err) => {
+                            console.log(err.message);
                         });
                     } else {
                         dispatch({

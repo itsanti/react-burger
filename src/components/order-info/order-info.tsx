@@ -10,6 +10,7 @@ import { selectIngredients } from '../../services/selectors/ingredients';
 import { dateFormat } from '../../utils/utils';
 import { selectOrderByNumber } from '../../services/selectors/feed';
 import { ROUTES } from '../../utils/config';
+import { OrderStatusI18n } from '../../utils/types/prop-types';
 
 type Item = {
   id: string;
@@ -74,7 +75,7 @@ const OrderInfo: FC = () => {
       <header className={styles.header} style={{ marginTop: mt }}>
         {!location.state && <p className={styles.orderNumber}>#{order.number}</p>}
         <p className={styles.orderName}>{order.name}</p>
-        <p className={styles.orderStatus}>{order.status}</p>
+        <p className={styles.orderStatus}>{OrderStatusI18n[order.status]}</p>
       </header>
       <p className={styles.orderIngredientsTitle}>Состав:</p>
       <ul className={styles.orderIngredients}>{Object.entries(itemsData).map(([key, item]) => {
