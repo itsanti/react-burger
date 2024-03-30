@@ -104,3 +104,13 @@ export type TMessage = {
   total: number;
   totalToday: number;
 };
+
+export type TwsActions = {
+  wsInit: string;
+  wsClose: string;
+  wsSendMessage?: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
+};

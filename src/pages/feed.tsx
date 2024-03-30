@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from '../hooks';
 import { selectFeedStatus } from '../services/selectors/feed';
 import { feedConnect, FEED_CLOSE } from '../services/actions/feed';
 import OrderList from '../components/order-list/order-list';
+import OrderStat from '../components/order-stat/order-stat';
 
 const FeedPage: FC = () => {
   const status = useSelector(selectFeedStatus);
@@ -24,7 +25,7 @@ const FeedPage: FC = () => {
           <OrderList />
         </div>
         <div className={styles.right}>
-
+          <OrderStat />
         </div>
       </section>
     </div>

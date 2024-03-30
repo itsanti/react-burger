@@ -1,0 +1,42 @@
+.root {
+  composes: text text_type_main-default from global;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 36px;
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+}
+
+.orderList {
+  composes: text text_type_digits-default from global;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  column-gap: 8px;
+  flex-wrap: wrap;
+  height: 320px;
+  color: #00cccc;
+  font-size: 20px;
+}
+
+.totals .title {
+  margin: 0;
+}
+
+.total {
+  composes: text text_type_digits-medium from global;
+  margin-bottom: 0;
+  font-size: 144px;
+  text-shadow: 0 0 10px #3333ff;
+}

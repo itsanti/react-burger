@@ -1,13 +1,12 @@
-import type { Middleware, MiddlewareAPI } from 'redux';
-import { AppDispatch, RootState } from '../../utils/types';
-import { TFeedStoreActions, TFeedActions } from '../actions/feed';
+import type { Middleware } from 'redux';
+import { RootState } from '../../utils/types';
+import { TwsActions } from '../../utils/types/prop-types';
 
-
-export const socketMiddleware = (wsActions: TFeedStoreActions): Middleware => {
-    return ((store: MiddlewareAPI<AppDispatch, RootState>) => {
+export const socketMiddleware = (wsActions: TwsActions): Middleware<{}, RootState> => {
+    return ((store) => {
         let socket: WebSocket | null = null;
 
-        return next => (action: TFeedActions) => {
+        return next => (action) => {
             const { dispatch } = store;
             const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
             if (action.type === wsInit) {
@@ -38,5 +37,5 @@ export const socketMiddleware = (wsActions: TFeedStoreActions): Middleware => {
 
             next(action);
         };
-    }) as Middleware;
+    });
 };

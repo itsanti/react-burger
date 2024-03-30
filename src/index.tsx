@@ -4,7 +4,7 @@ import './index.css';
 import './fonts/fonts.css';
 import '@ya.praktikum/react-developer-burger-ui-components/dist/ui/box.css';
 import App from './components/app/app';
-import { thunk } from 'redux-thunk';
+import thunk from 'redux-thunk';
 import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { rootReducer } from './services/reducers/root';

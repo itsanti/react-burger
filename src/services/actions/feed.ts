@@ -1,4 +1,4 @@
-import { TMessage } from '../../utils/types/prop-types';
+import { TMessage, TwsActions } from '../../utils/types/prop-types';
 
 export const FEED_CONNECT: 'FEED_CONNECT' = 'FEED_CONNECT';
 export const FEED_DISCONNECT: 'FEED_DISCONNECT' = 'FEED_DISCONNECT';
@@ -16,12 +16,13 @@ export type TFeedStoreActions = {
   onError: typeof FEED_ERROR;
 };
 
-export const feedStoreActions = {
+export const feedStoreActions: TwsActions = {
   wsInit: FEED_CONNECTING,
   onOpen: FEED_CONNECT,
   onMessage: FEED_MESSAGE,
-  onClose: FEED_CLOSE,
+  wsClose: FEED_CLOSE,
   onError: FEED_ERROR,
+  onClose: FEED_CLOSE,
 };
 
 export interface IFeedConnectingAction {
