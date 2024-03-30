@@ -13,13 +13,18 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { BrowserRouter } from 'react-router-dom';
 import { socketMiddleware } from './services/middlewares/socket-middleware';
 import { feedStoreActions } from './services/actions/feed';
+import { feedProfileStoreActions } from './services/actions/profile-feed';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(feedStoreActions)));
+const enhancer = composeEnhancers(applyMiddleware(
+  thunk,
+  socketMiddleware(feedStoreActions, false),
+  socketMiddleware(feedProfileStoreActions, true))
+);
 export const store = createStore(rootReducer, enhancer);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

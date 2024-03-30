@@ -5,6 +5,7 @@ import { reducerCurrentIngredient } from './current-ingredient';
 import { reducerOrder } from './order';
 import { reducerAuth } from './auth';
 import { feedReducer } from './feed';
+import { profileFeedReducer } from './profile-feed';
 
 export const rootReducer = combineReducers({
   ingredients: reducerIngredients,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   order: reducerOrder,
   user: reducerAuth,
   feed: feedReducer,
+  profileFeed: profileFeedReducer,
 });

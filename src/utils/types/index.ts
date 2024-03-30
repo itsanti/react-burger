@@ -5,6 +5,7 @@ import { TIngredientsActions } from '../../services/actions/ingredients';
 import { TBurgerConstructorActions } from '../../services/actions/burger-constructor';
 import { TAuthActions } from '../../services/actions/auth';
 import { TFeedActions } from '../../services/actions/feed';
+import { TProfileFeedActions } from '../../services/actions/profile-feed';
 import { rootReducer } from '../../services/reducers/root';
 
 type TApplicationActions =
@@ -13,7 +14,8 @@ type TApplicationActions =
   | TCurrentIngredientActions
   | TOrderActions
   | TBurgerConstructorActions
-  | TFeedActions;
+  | TFeedActions
+  | TProfileFeedActions;
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = ThunkDispatch<RootState, unknown, TApplicationActions>;

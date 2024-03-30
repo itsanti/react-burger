@@ -9,6 +9,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { selectIngredients } from '../../services/selectors/ingredients';
 import { dateFormat } from '../../utils/utils';
 import { selectOrderByNumber } from '../../services/selectors/feed';
+import { ROUTES } from '../../utils/config';
 
 type Item = {
   id: string;
@@ -63,9 +64,14 @@ const OrderInfo: FC = () => {
   const itemsData = getIngredientsDetails(order.ingredients);
   const totalPrice = Object.keys(itemsData).reduce((acc, current) => acc + itemsData[current].price * itemsData[current].count, 0);
 
+  let mt = 0;
+  if (location.pathname.startsWith(ROUTES.feed)) {
+    mt = 120;
+  }
+
   return (
     <section className={styles.root}>
-      <header className={styles.header}>
+      <header className={styles.header} style={{ marginTop: mt }}>
         {!location.state && <p className={styles.orderNumber}>#{order.number}</p>}
         <p className={styles.orderName}>{order.name}</p>
         <p className={styles.orderStatus}>{order.status}</p>

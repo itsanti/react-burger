@@ -6,7 +6,7 @@
 .orderNumber {
   composes: text text_type_digits-default from global;
   text-align: center;
-  margin: 120px auto 40px;
+  margin: 0 auto 40px;
 }
 
 .price {

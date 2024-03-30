@@ -1,6 +1,8 @@
 import { Sections } from './types/prop-types';
 
 export const API_URL: string = 'https://norma.nomoreparties.space/api';
+export const WSS_FEED_URL: string = 'wss://norma.nomoreparties.space/orders/all';
+export const WSS_PROFILE_URL: string = 'wss://norma.nomoreparties.space/orders';
 
 export const SECTIONS: [Sections, string][] = [
   [Sections.bun, 'Булки'],

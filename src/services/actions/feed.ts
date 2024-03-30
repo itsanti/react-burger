@@ -5,22 +5,15 @@ export const FEED_DISCONNECT: 'FEED_DISCONNECT' = 'FEED_DISCONNECT';
 
 export const FEED_CONNECTING: 'FEED_CONNECTING' = 'FEED_CONNECTING';
 export const FEED_CLOSE: 'FEED_CLOSE' = 'FEED_CLOSE';
+export const FEED_WS_CLOSE: 'FEED_WS_CLOSE' = 'FEED_WS_CLOSE';
 export const FEED_MESSAGE: 'FEED_MESSAGE' = 'FEED_MESSAGE';
 export const FEED_ERROR: 'FEED_ERROR' = 'FEED_ERROR';
-
-export type TFeedStoreActions = {
-  wsInit: typeof FEED_CONNECTING;
-  onOpen: typeof FEED_CONNECT;
-  onMessage: typeof FEED_MESSAGE;
-  onClose: typeof FEED_CLOSE;
-  onError: typeof FEED_ERROR;
-};
 
 export const feedStoreActions: TwsActions = {
   wsInit: FEED_CONNECTING,
   onOpen: FEED_CONNECT,
   onMessage: FEED_MESSAGE,
-  wsClose: FEED_CLOSE,
+  wsClose: FEED_WS_CLOSE,
   onError: FEED_ERROR,
   onClose: FEED_CLOSE,
 };
@@ -46,8 +39,12 @@ export interface IFeedMessageAction {
   readonly payload: TMessage;
 }
 
-export interface IFeedClosAction {
+export interface IFeedCloseAction {
   readonly type: typeof FEED_CLOSE;
+}
+
+export interface IFeedWSCloseAction {
+  readonly type: typeof FEED_WS_CLOSE;
 }
 
 export interface IFeedErrorAction {
@@ -59,5 +56,6 @@ export type TFeedActions =
   | IFeedConnectAction
   | IFeedConnectingAction
   | IFeedMessageAction
-  | IFeedClosAction
-  | IFeedErrorAction;
+  | IFeedCloseAction
+  | IFeedErrorAction
+  | IFeedWSCloseAction;

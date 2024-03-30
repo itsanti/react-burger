@@ -4,10 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { OrdersList } from '../../utils/types/prop-types';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from '../../hooks';
-import { selectFeedOrders } from '../../services/selectors/feed';
-import { ROUTES } from '../../utils/config';
 import { dateFormat } from '../../utils/utils';
 import { selectIngredients } from '../../services/selectors/ingredients';
+import { RootState } from '../../utils/types';
 
 type OrdersListItem = {
   order: OrdersList;
@@ -47,7 +46,12 @@ const OrderListItem: FC<OrdersListItem> = ({ order }) => {
   );
 }
 
-const OrderList: FC = () => {
+type OrderListProps = {
+  selectFeedOrders: (state: RootState) => OrdersList[];
+  modalRoute: string;
+}
+
+const OrderList: FC<OrderListProps> = ({ selectFeedOrders, modalRoute }) => {
   const location = useLocation();
   const orders = useSelector(selectFeedOrders);
 
@@ -60,7 +64,7 @@ const OrderList: FC = () => {
       {orders.map((order) => (
         <Link
           key={order._id}
-          to={`${ROUTES.feed}/${order.number}`}
+          to={`${modalRoute}/${order.number}`}
           style={{ textDecoration: 'none', color: 'inherit' }}
           state={{ backgroundLocation: location }}
           className={styles.link}

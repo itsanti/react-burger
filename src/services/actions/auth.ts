@@ -131,10 +131,11 @@ type RefreshResponse = {
 };
 
 export const refreshToken = () => {
-  const token = localStorage.getItem('refreshToken');
-  if (token) {
-    return requestPayload<RefreshResponse, { token: string }>('/auth/token', { body: { token } });
+  let token = localStorage.getItem('refreshToken');
+  if (!token) {
+    token = '';
   }
+  return requestPayload<RefreshResponse, { token: string }>('/auth/token', { body: { token } });
 };
 
 type UserResponse = {

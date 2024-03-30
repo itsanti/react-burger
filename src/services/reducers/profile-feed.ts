@@ -1,8 +1,14 @@
-import { FEED_CONNECT, FEED_CONNECTING, FEED_CLOSE, FEED_MESSAGE, FEED_ERROR } from '../actions/feed';
-import { TFeedActions } from '../actions/feed';
+import {
+  PROFILE_FEED_CONNECT,
+  PROFILE_FEED_CONNECTING,
+  PROFILE_FEED_CLOSE,
+  PROFILE_FEED_MESSAGE,
+  PROFILE_FEED_ERROR,
+} from '../actions/profile-feed';
+import { TProfileFeedActions } from '../actions/profile-feed';
 import { OrdersList, WebsocketStatus } from '../../utils/types/prop-types';
 
-type FeedState = {
+type ProfileFeedState = {
   wsStatus: WebsocketStatus;
   orders: OrdersList[];
   total: number | null;
@@ -10,39 +16,39 @@ type FeedState = {
   error?: Event;
 };
 
-const initialState: FeedState = {
+const initialState: ProfileFeedState = {
   wsStatus: WebsocketStatus.CLOSED,
   orders: [],
   total: null,
   totalToday: null,
 };
 
-export const feedReducer = (state = initialState, action: TFeedActions): FeedState => {
+export const profileFeedReducer = (state = initialState, action: TProfileFeedActions): ProfileFeedState => {
   switch (action.type) {
-    case FEED_CONNECTING: {
+    case PROFILE_FEED_CONNECTING: {
       return {
         ...state,
         wsStatus: WebsocketStatus.CONNECTING,
       };
     }
-    case FEED_CONNECT: {
+    case PROFILE_FEED_CONNECT: {
       return {
         ...state,
         error: undefined,
         wsStatus: WebsocketStatus.OPEN,
       };
     }
-    case FEED_ERROR: {
+    case PROFILE_FEED_ERROR: {
       return {
         ...state,
         error: action.payload,
         wsStatus: WebsocketStatus.CLOSED,
       };
     }
-    case FEED_CLOSE: {
+    case PROFILE_FEED_CLOSE: {
       return { ...initialState };
     }
-    case FEED_MESSAGE: {
+    case PROFILE_FEED_MESSAGE: {
       return {
         ...state,
         error: undefined,
