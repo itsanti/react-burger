@@ -74,3 +74,32 @@ export type ProtectedProps = {
   onlyUnAuth?: boolean;
   component: ReactElement;
 };
+
+export enum WebsocketStatus {
+  CONNECTING = 'CONNECTING...',
+  OPEN = 'ONLINE',
+  CLOSING = 'CLOSING',
+  CLOSED = 'OFFLINE',
+}
+
+export enum OrderStatus {
+  created = 'created',
+  pending = 'pending',
+  done = 'done',
+}
+
+export type OrdersList = {
+  ingredients: string[];
+  _id: string;
+  status: OrderStatus;
+  number: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TMessage = {
+  success: boolean;
+  orders: OrdersList[];
+  total: number;
+  totalToday: number;
+};
