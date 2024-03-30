@@ -1,12 +1,13 @@
-import { fetchWithRefresh } from '../../utils/http';
+import { TServerResponse, fetchWithRefresh, requestPayload } from '../../utils/http';
 import { AppThunkAction, AppDispatch } from '../../utils/types';
-import { IOrder } from '../../utils/types/prop-types';
+import { IOrder, OrdersList } from '../../utils/types/prop-types';
 
 export const POST_ORDER_REQUEST: 'POST_ORDER_REQUEST' = 'POST_ORDER_REQUEST';
 export const POST_ORDER_SUCCESS: 'POST_ORDER_SUCCESS' = 'POST_ORDER_SUCCESS';
 export const POST_ORDER_FAILED: 'POST_ORDER_FAILED' = 'POST_ORDER_FAILED';
 
 export const SET_ORDER_DETAILS: 'SET_ORDER' = 'SET_ORDER';
+export const SET_ORDER_DETAILS_PAGE: 'SET_ORDER_DETAILS_PAGE' = 'SET_ORDER_DETAILS_PAGE';
 
 export interface IPostOrderAction {
   readonly type: typeof POST_ORDER_REQUEST;
@@ -22,6 +23,25 @@ export interface ISetOrderAction {
   readonly type: typeof SET_ORDER_DETAILS;
   readonly payload: OrderResponse | null;
 }
+
+export interface ISetOrderDetailsPageAction {
+  readonly type: typeof SET_ORDER_DETAILS_PAGE;
+  readonly payload: OrdersList | null;
+}
+
+export const setOrderDetailsPage = (number: string): AppThunkAction => {
+  return (dispatch) => {
+    if (number) {
+      requestPayload<TServerResponse<{ orders: OrdersList[] }>>(`/orders/${number}`, { method: 'GET' }).then((res) => {
+        if (res.orders.length) {
+          dispatch({ type: SET_ORDER_DETAILS_PAGE, payload: res.orders[0] });
+        } else {
+          dispatch({ type: SET_ORDER_DETAILS_PAGE, payload: null });
+        }
+      });
+    }
+  };
+};
 
 export const setOrderDetails = (order: OrderResponse | null): ISetOrderAction => {
   return {
@@ -65,4 +85,9 @@ export function getOrderDetails(ingredients: string[]): AppThunkAction {
   };
 }
 
-export type TOrderActions = IPostOrderAction | IPostOrderSuccessAction | IPostOrderFailedAction | ISetOrderAction;
+export type TOrderActions =
+  | IPostOrderAction
+  | IPostOrderSuccessAction
+  | IPostOrderFailedAction
+  | ISetOrderAction
+  | ISetOrderDetailsPageAction;

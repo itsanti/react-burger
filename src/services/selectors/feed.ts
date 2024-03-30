@@ -1,5 +1,5 @@
 import { RootState } from '../../utils/types';
-import { OrderStatus } from '../../utils/types/prop-types';
+import { OrderStatus, OrdersList } from '../../utils/types/prop-types';
 
 const selectCurrentFeedModule = (state: RootState) => state.feed;
 
@@ -13,3 +13,9 @@ export const selectFeedOrdersByStatus = (status: OrderStatus) => (state: RootSta
 
 export const selectFeedTotal = (state: RootState) => selectCurrentFeedModule(state).total;
 export const selectFeedTotalToday = (state: RootState) => selectCurrentFeedModule(state).totalToday;
+
+export const selectOrderByNumber = (number: number) => (state: RootState) => {
+  return selectCurrentFeedModule(state)
+    .orders.filter((order: OrdersList) => order.number === number)
+    .at(0);
+};
