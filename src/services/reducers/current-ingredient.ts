@@ -2,7 +2,7 @@ import { SET_ACTIVE_INGREDIENT } from '../actions/current-ingredient';
 import { IngredientProps } from '../../utils/types/prop-types';
 import { TCurrentIngredientActions } from '../actions/current-ingredient';
 
-type CurrentIngredient = IngredientProps | null;
+export type CurrentIngredient = IngredientProps | null;
 const initialState: CurrentIngredient = null;
 
 export const reducerCurrentIngredient = (

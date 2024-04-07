@@ -1,46 +1,68 @@
-# Getting Started with Create React App
+# Stellar Burger
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Учебный проект на курсе [**React-разработчик**](https://practicum.yandex.ru/react/) от Я Практикум. [**Программа**](https://code.s3.yandex.net/react/syllabys_React.pdf) курса.
 
-## Available Scripts
+## Демо проекта
 
-In the project directory, you can run:
+[Stellar Burger demo](https://itsanti.github.io/react-burger/)
 
-### `npm start`
+## Стек
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white) ![React DND](https://img.shields.io/badge/React_DnD-CA4245?style=for-the-badge&logo=react&logoColor=white) ![CSS Modules](https://img.shields.io/badge/CSS_Modules-48B0F1.svg?style=for-the-badge&logoColor=white) ![WebSocket](https://img.shields.io/badge/WebSocket-FDEE21?style=for-the-badge&logoColor=black) ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **React**
+- **TypeScript**
+- **React Router V6** -- маршрутизация в приложении
+- **React DND** -- перетаскивание элементов в конструктор заказа и сортировка
+- **Redux/Toolkit**
+- **CSS Modules**
+- **Rest api**
+- **WebSocket** -- лента заказов
+- **JWT** -- регистрация и авторизация
+- [React Developer Burger UI Components](https://yandex-practicum.github.io/react-developer-burger-ui-components/docs/)
 
-### `npm test`
+## Описание
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Интерактивный конструктор бургеров, с возможностью перетаскивать ингредиенты и создавать свой собственный бургер в конструкторе.
 
-### `npm run build`
+## Функциональность
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Авторизация и регистрация пользователей.
+- Сброс и восстановление забытого пароля.
+- Drag'n'drop интерфейс конструктора бургеров.
+- Расчет суммы заказа в реальном времени и счетчики для каждого ингредиента.
+- Динамическая лента заказов всех пользователей `/feed` и ваших заказов `/profile/order
+- Отображение данных о заказе и об ингредиентах в модальных окнах.
+- Вложенные и динамические маршруты в приложении.
+  - Маршрут `/profile` защищен от не авторизованных пользователей.
+  - Маршруты `/login`, `/register`, `/forgot-password`, `/reset-password` защищены от авторизованных пользователей.
+- Возможность редактирования информации о пользователе в профиле.
+- Использование `access` и `refresh` токенов для безопасности приложения.
+- Для большинства данных реализовано хранилище Redux.
+- Все элементы приложения типизированы.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Установка и запуск проекта
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Клонируйте репозитарий
 
-### `npm run eject`
+```bash
+git clone https://github.com/itsanti/react-burger.git
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. Перейдите в каталог проекта
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+cd react-burger
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+3. Установите зависимости
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```bash
+npm install
+```
 
-## Learn More
+4. Запустите проект
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+npm start
+```

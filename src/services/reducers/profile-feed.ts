@@ -16,7 +16,7 @@ type ProfileFeedState = {
   error?: Event;
 };
 
-const initialState: ProfileFeedState = {
+export const initialState: ProfileFeedState = {
   wsStatus: WebsocketStatus.CLOSED,
   orders: [],
   total: null,

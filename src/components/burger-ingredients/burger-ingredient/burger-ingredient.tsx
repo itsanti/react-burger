@@ -34,7 +34,7 @@ const BurgerIngredient: FC<BurgerIngredientProps> = ({ ingredient }) => {
   const opacity = isDragging ? 0.2 : 1;
 
   return (
-    <div style={{ opacity }} className={styles.Ingredient} onClick={() => setIngredientHandler(ingredient)}>
+    <div data-testid='ingredientItem' style={{ opacity }} className={styles.Ingredient} onClick={() => setIngredientHandler(ingredient)}>
       {countersMap && countersMap[ingredient._id] && <Counter count={countersMap[ingredient._id]} size="default" />}
       <img ref={drag} src={ingredient.image_large} alt={ingredient.name} className={styles.IngredientImage} />
       <p className={styles.price}>

@@ -10,7 +10,7 @@ type FeedState = {
   error?: Event;
 };
 
-const initialState: FeedState = {
+export const initialState: FeedState = {
   wsStatus: WebsocketStatus.CLOSED,
   orders: [],
   total: null,

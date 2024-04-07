@@ -15,7 +15,7 @@ type OrderState = {
   orderDetailsPage: OrdersList | null;
 };
 
-const initialState: OrderState = {
+export const initialState: OrderState = {
   orderDetails: null,
   isError: false,
   isLoading: false,
