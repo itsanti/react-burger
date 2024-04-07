@@ -8,7 +8,7 @@ export type UserState<T = NonNullableUser | null> = {
   user: T;
 };
 
-const initialState: UserState = {
+export const initialState: UserState = {
   isAuthChecked: false,
   user: null,
 };

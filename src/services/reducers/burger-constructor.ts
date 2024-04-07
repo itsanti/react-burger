@@ -14,7 +14,7 @@ type BurgerConstructorState = {
   ingredients: IngredientProps[];
 };
 
-const initialState: BurgerConstructorState = {
+export const initialState: BurgerConstructorState = {
   bun: null,
   ingredients: [],
 };
