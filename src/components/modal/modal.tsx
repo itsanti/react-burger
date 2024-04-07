@@ -32,7 +32,7 @@ const Modal: FC<ModalProps> = ({ children, title, setIsModalOpened }) => {
       <div className={styles.modal}>
         <div className={styles.title}>
           {modalTitle}
-          <button className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
+          <button data-testid="closeModalBtn" className={styles.closeBtn} onClick={() => setIsModalOpened(false)}>
             <CloseIcon />
           </button>
         </div>

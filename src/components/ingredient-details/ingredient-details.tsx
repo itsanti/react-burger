@@ -27,7 +27,7 @@ const IngredientDetails: FC = () => {
   }
 
   return (
-    <div className={styles.root}>
+    <div data-testid="ingredientModal" className={styles.root}>
       {!location.state && <h2 className="text_type_main-large mt-30">Детали ингредиента</h2>}
       <img className={styles.image} src={ingredient.image_large} alt={ingredient.name} />
       <p className={styles.name}>{ingredient.name}</p>
