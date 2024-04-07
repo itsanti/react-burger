@@ -15,6 +15,10 @@ describe('order-modal', () => {
     window.localStorage.setItem('accessToken', 'test-accessToken');
   });
 
+  afterEach(() => {
+    cy.clearLocalStorage();
+  });
+
   it('order-modal', () => {
     const ingredientsSelector = '[data-testid="ingredientItem"]';
     const counterSelector = '.counter__num';

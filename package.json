@@ -32,7 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false --verbose",
     "eject": "react-scripts eject",
-    "cypress": "./node_modules/.bin/cypress open"
+    "cypress:linux": "./node_modules/.bin/cypress open",
+    "cypress:win": ".\\node_modules\\.bin\\cypress open"
   },
   "eslintConfig": {
     "extends": [
